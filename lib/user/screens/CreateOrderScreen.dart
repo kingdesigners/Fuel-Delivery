@@ -146,8 +146,6 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
-  final List<Map<String, String>> selectedPackingSymbols = [];
-  final List<Map<String, String>> packingSymbolsItems = getPackagingSymbols();
   int insuranceSelectedOption = 1;
   List<String> appBarTitleList = [
     language.createOrder,
@@ -408,9 +406,6 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
 
   createOrderApiCall(String orderStatus) async {
     List<Map<String, String>> packaging_symbols = [];
-    selectedPackingSymbols.map((item) {
-      packaging_symbols.add({'key': item["key"]!, 'title': item['title']!});
-    }).toList();
     extraChargeList.clear();
     if (totalAmountResponse!.extraCharges != null) {
       totalAmountResponse!.extraCharges!.forEach((element) {
@@ -1145,63 +1140,6 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
             }).toList(),
           ),
           16.height,
-          Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Text(language.labels, style: primaryTextStyle()),
-              Icon(Icons.info,
-                      color: appStore.isDarkMode
-                          ? Colors.white.withOpacity(0.7)
-                          : ColorUtils.colorPrimary)
-                  .onTap(() {
-                PackagingSymbolsInfo().launch(context);
-              })
-            ],
-          ),
-          16.height,
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: packingSymbolsItems.map((item) {
-              bool isSelected = selectedPackingSymbols.contains(item);
-              return Container(
-                width: 70,
-                decoration: boxDecorationWithRoundedCorners(),
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      item['image']!,
-                      width: 24,
-                      height: 24,
-                      color: appStore.isDarkMode
-                          ? Colors.white.withOpacity(0.7)
-                          : ColorUtils.colorPrimary,
-                    ).center().paddingAll(10),
-                    if (isSelected)
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                          size: 16,
-                        ),
-                      ),
-                  ],
-                ),
-              ).onTap(() {
-                setState(() {
-                  if (isSelected) {
-                    selectedPackingSymbols.remove(item);
-                  } else {
-                    selectedPackingSymbols.add(item);
-                  }
-                });
-
-                setState(() {});
-              });
-            }).toList(),
-          ),
         ],
       );
     });
