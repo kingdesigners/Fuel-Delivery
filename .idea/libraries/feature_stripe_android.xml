@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="feature-stripe_android">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/stripe_android/intermediates/merged_java_res/debug/mergeDebugJavaResource/feature-stripe_android.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="feature-store_checker">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/store_checker/intermediates/merged_java_res/debug/mergeDebugJavaResource/feature-store_checker.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

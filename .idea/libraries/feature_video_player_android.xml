@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="feature-video_player_android">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/video_player_android/intermediates/merged_java_res/debug/mergeDebugJavaResource/feature-video_player_android.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="feature-wakelock_plus">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/wakelock_plus/intermediates/merged_java_res/debug/mergeDebugJavaResource/feature-wakelock_plus.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
