@@ -123,7 +123,7 @@ class OrderHistoryItem extends StatelessWidget {
                     border: Border.all(color: ColorUtils.borderColor, width: appStore.isDarkMode ? 0.2 : 1),
                     backgroundColor: context.cardColor),
                 padding: .all(8),
-                child: Image.asset(parcelTypeIcon(orderData.parcelType.validate()), height: 24, width: 24, color: ColorUtils.colorPrimary),
+                child: Icon(Icons.local_gas_station, size: 24, color: ColorUtils.colorPrimary),
               ),
               8.width,
               Column(
