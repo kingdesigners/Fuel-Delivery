@@ -137,6 +137,7 @@ dependencies:
     sdk: flutter
   #for Android
   store_checker: ^1.8.0
+  flutter_dotenv: ^6.0.0
   #for ios uncomment below version and comment above version
   # store_checker: ^1.7.0
 
@@ -172,6 +173,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
+    - .env.example
     - assets/
     - assets/ringtone/
     - assets/icons/
