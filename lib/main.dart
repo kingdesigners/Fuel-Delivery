@@ -8,6 +8,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../extensions/extension_util/string_extensions.dart';
 import '../../main/services/OrdersMessageService.dart';
@@ -31,28 +32,9 @@ import 'main/store/AppStore.dart';
 import 'main/utils/Common.dart';
 import 'main/utils/firebase_options.dart';
 
-final navigatorKey = GlobalKey<NavigatorState>();
-late SharedPreferences sharedPreferences;
-AppStore appStore = AppStore();
-late BaseLanguage language;
-// Added by SK
-LanguageJsonData? selectedServerLanguageData;
-List<LanguageJsonData>? defaultServerLanguageData = [];
-
-UserService userService = UserService();
-//ChatMessageService chatMessageService = ChatMessageService();
-AuthServices authService = AuthServices();
-OrdersMessageService ordersMessageService = OrdersMessageService();
-NotificationService notificationService = NotificationService();
-late List<FileModel> fileList = [];
-bool isCurrentlyOnNoInternet = false;
-StreamSubscription<Position>? positionStream;
-bool mIsEnterKey = false;
-String mSelectedImage = "assets/default_wallpaper.png";
-ValueNotifier<bool> isSosVisible = ValueNotifier(false);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 
   try {
     if (Platform.isIOS) {
@@ -69,7 +51,7 @@ void main() async {
       rethrow;
     }
   }
-  
+
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   // await initialize(aLocaleLanguageList: languageList());
@@ -93,11 +75,29 @@ void main() async {
   } catch (e) {
     print("error========${e.toString()}");
   }
-// Add this line before runApp
-  await dotenv.load(fileName: ".env");
 
-    runApp(MyApp());
+  runApp(MyApp());
 }
+
+final navigatorKey = GlobalKey<NavigatorState>();
+late SharedPreferences sharedPreferences;
+AppStore appStore = AppStore();
+late BaseLanguage language;
+// Added by SK
+LanguageJsonData? selectedServerLanguageData;
+List<LanguageJsonData>? defaultServerLanguageData = [];
+
+UserService userService = UserService();
+//ChatMessageService chatMessageService = ChatMessageService();
+AuthServices authService = AuthServices();
+OrdersMessageService ordersMessageService = OrdersMessageService();
+NotificationService notificationService = NotificationService();
+late List<FileModel> fileList = [];
+bool isCurrentlyOnNoInternet = false;
+StreamSubscription<Position>? positionStream;
+bool mIsEnterKey = false;
+String mSelectedImage = "assets/default_wallpaper.png";
+ValueNotifier<bool> isSosVisible = ValueNotifier(false);
 
 class MyApp extends StatefulWidget {
   @override

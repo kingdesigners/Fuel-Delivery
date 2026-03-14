@@ -17,14 +17,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
+  static FirebaseOptions get android => FirebaseOptions(
     apiKey: FIREBASE_API_KEY,
     appId: FIREBASE_APP_ID,
     messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
     projectId: FIREBASE_PROJECT_ID,
     storageBucket: FIREBASE_STORAGE_BUCKET,
   );
-  static const FirebaseOptions ios = FirebaseOptions(
+  static FirebaseOptions get ios => FirebaseOptions(
     apiKey: FIREBASE_API_KEY,
     appId: FIREBASE_APP_ID_IOS,
     messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
