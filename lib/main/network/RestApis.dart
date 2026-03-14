@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:mighty_delivery/main/models/DashboardDetail.dart';
 import 'package:mighty_delivery/main/models/EmergencyResponseListModel.dart';
+import 'package:mighty_delivery/main/models/RiderModel.dart';
 import '../../extensions/extension_util/int_extensions.dart';
 import '../../extensions/extension_util/string_extensions.dart';
 import '../../extensions/extension_util/widget_extensions.dart';
@@ -745,4 +746,14 @@ Future<LDBaseResponse> deleteSosContact(int id) async {
 
 Future<EmergencyPendingListResonse> getEmergencyList() async {
   return EmergencyPendingListResonse.fromJson(await handleResponse(await buildHttpResponse('emergency-list/', method: HttpMethod.GET)));
+}
+
+// Add method to get delivery_man list
+Future<RiderListModel> getAvailableRiders(String? cityId) async {
+  // Use user-list API with type=delivery_man
+  String endpoint = 'user-list?user_type=delivery_man&status=1';
+  if (cityId != null && cityId.isNotEmpty) {
+    endpoint += '&city_id=$cityId';
+  }
+  return RiderListModel.fromJson(await handleResponse(await buildHttpResponse(endpoint, method: HttpMethod.GET)));
 }
