@@ -32,26 +32,6 @@ import 'main/store/AppStore.dart';
 import 'main/utils/Common.dart';
 import 'main/utils/firebase_options.dart';
 
-final navigatorKey = GlobalKey<NavigatorState>();
-late SharedPreferences sharedPreferences;
-AppStore appStore = AppStore();
-late BaseLanguage language;
-// Added by SK
-LanguageJsonData? selectedServerLanguageData;
-List<LanguageJsonData>? defaultServerLanguageData = [];
-
-UserService userService = UserService();
-//ChatMessageService chatMessageService = ChatMessageService();
-AuthServices authService = AuthServices();
-OrdersMessageService ordersMessageService = OrdersMessageService();
-NotificationService notificationService = NotificationService();
-late List<FileModel> fileList = [];
-bool isCurrentlyOnNoInternet = false;
-StreamSubscription<Position>? positionStream;
-bool mIsEnterKey = false;
-String mSelectedImage = "assets/default_wallpaper.png";
-ValueNotifier<bool> isSosVisible = ValueNotifier(false);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
@@ -71,7 +51,7 @@ void main() async {
       rethrow;
     }
   }
-  
+
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   // await initialize(aLocaleLanguageList: languageList());
@@ -96,8 +76,28 @@ void main() async {
     print("error========${e.toString()}");
   }
 
-    runApp(MyApp());
+  runApp(MyApp());
 }
+
+final navigatorKey = GlobalKey<NavigatorState>();
+late SharedPreferences sharedPreferences;
+AppStore appStore = AppStore();
+late BaseLanguage language;
+// Added by SK
+LanguageJsonData? selectedServerLanguageData;
+List<LanguageJsonData>? defaultServerLanguageData = [];
+
+UserService userService = UserService();
+//ChatMessageService chatMessageService = ChatMessageService();
+AuthServices authService = AuthServices();
+OrdersMessageService ordersMessageService = OrdersMessageService();
+NotificationService notificationService = NotificationService();
+late List<FileModel> fileList = [];
+bool isCurrentlyOnNoInternet = false;
+StreamSubscription<Position>? positionStream;
+bool mIsEnterKey = false;
+String mSelectedImage = "assets/default_wallpaper.png";
+ValueNotifier<bool> isSosVisible = ValueNotifier(false);
 
 class MyApp extends StatefulWidget {
   @override

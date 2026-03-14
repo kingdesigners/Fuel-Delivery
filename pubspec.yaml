@@ -174,7 +174,6 @@ flutter:
 
   assets:
     - .env
-    - .env.example
     - assets/
     - assets/ringtone/
     - assets/icons/
