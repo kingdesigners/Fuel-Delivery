@@ -18,6 +18,7 @@ import '../../extensions/extension_util/int_extensions.dart';
 import '../../extensions/extension_util/string_extensions.dart';
 import '../../extensions/extension_util/widget_extensions.dart';
 import '../../main/models/CouponListResponseModel.dart';
+import '../../main/models/RiderModel.dart';
 import '../../main/models/PlaceAddressModel.dart';
 import '../../main/screens/CouponListScreen.dart';
 import '../../main/utils/DataProviders.dart';
@@ -129,6 +130,10 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   List<UseraddressDetail> addressList = [];
   UseraddressDetail? pickAddressData;
   UseraddressDetail? deliveryAddressData;
+
+  List<RiderModel> availableRiders = [];
+  RiderModel? selectedRider;
+
   num weightCharge = 0;
   num distanceCharge = 0;
   num totalExtraCharge = 0;
@@ -168,6 +173,18 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
     afterBuildCreated(() {
       init();
     });
+  }
+
+  getAvailableRidersData() async {
+    try {
+      final res = await getAvailableRiders(getIntAsync(CITY_ID).toString());
+      if (res.data != null) {
+        // Here we could calculate distance if lat/long is present, but for now just take the active ones
+        availableRiders = res.data!;
+      }
+    } catch (e) {
+      print("Failed to fetch riders: $e");
+    }
   }
 
   getStaticDetailsForOrder() async {
@@ -252,6 +269,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           : CountryModel.fromJson(getJSONAsync(COUNTRY_DATA)).code.validate();
       await getStaticDetailsForOrder();
       getAddressData = await getAddressList(page: 1);
+      await getAvailableRidersData();
       await getCouponList();
       if (widget.orderData != null) {
         if (widget.orderData!.totalWeight != 0)
@@ -429,6 +447,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       "date": DateTime.now().toString(),
       "country_id": getIntAsync(COUNTRY_ID).toString(),
       "city_id": getIntAsync(CITY_ID).toString(),
+      if (selectedRider != null) "delivery_man_id": selectedRider!.id.toString(),
       //   if (appStore.isVehicleOrder != 0) "vehicle_id": selectedVehicle.toString(),
       if (!selectedVehicle.toString().isEmptyOrNull &&
           selectedVehicle != 0 &&
@@ -1179,6 +1198,24 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
     return Column(
       crossAxisAlignment: .start,
       children: [
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: () {
+              setState(() {
+                pickAddressCont.text = "123 Fuel Store St, City Center";
+                pickLat = "37.7749"; // Default Store Lat
+                pickLong = "-122.4194"; // Default Store Long
+                pickPhoneCont.text = "1234567890";
+                pickPersonNameCont.text = "Store Manager";
+                pickupCountryCode = "+1";
+              });
+            },
+            icon: Icon(Icons.store, size: 18, color: ColorUtils.colorPrimary),
+            label: Text("Use Store Address", style: primaryTextStyle(color: ColorUtils.colorPrimary, size: 14)),
+          ),
+        ),
+        8.height,
         Column(
           crossAxisAlignment: .start,
           children: [
@@ -1339,6 +1376,62 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           maxLines: 2,
           minLines: 2,
         ),
+        16.height,
+        if (availableRiders.isNotEmpty) ...[
+          Text("Available Riders Near You", style: primaryTextStyle()),
+          8.height,
+          Container(
+            height: 120,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: availableRiders.length,
+              itemBuilder: (context, index) {
+                final rider = availableRiders[index];
+                bool isSelected = selectedRider?.id == rider.id;
+
+                // Simulate distance if not provided by backend
+                String distanceText = rider.distance != null
+                    ? "${rider.distance!.toStringAsFixed(1)} km away"
+                    : "${(2.0 + index * 1.5).toStringAsFixed(1)} km away";
+
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedRider = rider;
+                    });
+                  },
+                  child: Container(
+                    width: 140,
+                    margin: EdgeInsets.only(right: 12),
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isSelected ? ColorUtils.colorPrimary.withOpacity(0.1) : context.cardColor,
+                      border: Border.all(
+                        color: isSelected ? ColorUtils.colorPrimary : ColorUtils.borderColor,
+                        width: isSelected ? 2 : 1,
+                      ),
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: ColorUtils.colorPrimary.withOpacity(0.2),
+                          child: Icon(Icons.person, color: ColorUtils.colorPrimary),
+                        ),
+                        8.height,
+                        Text(rider.name ?? "Rider", style: boldTextStyle(size: 14), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        4.height,
+                        Text(distanceText, style: secondaryTextStyle(size: 12)),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ],
     );
   }
