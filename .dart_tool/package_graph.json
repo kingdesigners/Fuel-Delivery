@@ -283,13 +283,6 @@
       ]
     },
     {
-      "name": "flutter_dotenv",
-      "version": "5.2.1",
-      "dependencies": [
-        "flutter"
-      ]
-    },
-    {
       "name": "flutter_localizations",
       "version": "0.0.0",
       "dependencies": [
@@ -1486,7 +1479,7 @@
     },
     {
       "name": "matcher",
-      "version": "0.12.17",
+      "version": "0.12.18",
       "dependencies": [
         "async",
         "meta",
@@ -1497,7 +1490,7 @@
     },
     {
       "name": "test_api",
-      "version": "0.7.7",
+      "version": "0.7.9",
       "dependencies": [
         "async",
         "boolean_selector",
@@ -2521,14 +2514,14 @@
     },
     {
       "name": "material_color_utilities",
-      "version": "0.11.1",
+      "version": "0.13.0",
       "dependencies": [
         "collection"
       ]
     },
     {
       "name": "characters",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "dependencies": []
     },
     {
@@ -2890,6 +2883,13 @@
       "name": "flutter_inappwebview_internal_annotations",
       "version": "1.2.0",
       "dependencies": []
+    },
+    {
+      "name": "flutter_dotenv",
+      "version": "5.2.1",
+      "dependencies": [
+        "flutter"
+      ]
     }
   ],
   "configVersion": 1

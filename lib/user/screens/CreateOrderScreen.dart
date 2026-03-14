@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'ServiceIconHelper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -1116,28 +1117,57 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
             },
           ),
           8.height,
-          Wrap(
-            spacing: 8,
-            runSpacing: 0,
-            children: parcelTypeList.map((item) {
-              return Chip(
-                backgroundColor: context.scaffoldBackgroundColor,
-                label: Text(item.label!, style: secondaryTextStyle()),
-                elevation: 0,
-                labelStyle: primaryTextStyle(color: Colors.grey),
-                padding: .zero,
-                labelPadding: .symmetric(horizontal: 10, vertical: 0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                  side: BorderSide(
-                      color: ColorUtils.borderColor,
-                      width: appStore.isDarkMode ? 0.2 : 1),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.8,
+            ),
+            itemCount: parcelTypeList.length,
+            itemBuilder: (context, index) {
+              final item = parcelTypeList[index];
+              final isSelected = parcelTypeCont.text == item.label;
+              final iconPath = ServiceIconHelper.getIconPath(item.label!);
+              return GestureDetector(
+                onTap: () {
+                  parcelTypeCont.text = item.label!;
+                  setState(() {});
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: context.scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                    border: Border.all(
+                      color: isSelected ? ColorUtils.colorPrimary : ColorUtils.borderColor,
+                      width: isSelected ? 2.0 : (appStore.isDarkMode ? 0.2 : 1.0),
+                    ),
+                  ),
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        iconPath,
+                        height: 40,
+                        width: 40,
+                        color: isSelected ? ColorUtils.colorPrimary : (appStore.isDarkMode ? Colors.white : Colors.black87),
+                      ),
+                      8.height,
+                      Text(
+                        item.label!,
+                        style: isSelected ? primaryTextStyle(color: ColorUtils.colorPrimary, size: 12) : secondaryTextStyle(size: 12),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
-              ).onTap(() {
-                parcelTypeCont.text = item.label!;
-                setState(() {});
-              });
-            }).toList(),
+              );
+            },
           ),
           16.height,
         ],
