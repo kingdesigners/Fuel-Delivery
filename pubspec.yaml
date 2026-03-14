@@ -135,9 +135,9 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
+  flutter_dotenv: ^5.1.0
   #for Android
   store_checker: ^1.8.0
-  flutter_dotenv: ^6.0.0
   #for ios uncomment below version and comment above version
   # store_checker: ^1.7.0
 
