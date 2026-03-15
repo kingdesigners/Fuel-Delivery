@@ -5,6 +5,10 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'MyAddressListScreen.dart';
+import '../../main/models/AddressListModel.dart';
+import 'ServiceIconHelper.dart';
+import '../../main/models/RiderModel.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -116,6 +120,8 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   int selectedTabIndex = 0;
 
   bool isDeliverNow = true;
+  List<RiderModel> availableRiders = [];
+  int? selectedRiderId;
   int isSelected = 1;
 
   bool? isCash = false;
@@ -1121,28 +1127,57 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
             },
           ),
           8.height,
-          Wrap(
-            spacing: 8,
-            runSpacing: 0,
-            children: parcelTypeList.map((item) {
-              return Chip(
-                backgroundColor: context.scaffoldBackgroundColor,
-                label: Text(item.label!, style: secondaryTextStyle()),
-                elevation: 0,
-                labelStyle: primaryTextStyle(color: Colors.grey),
-                padding: .zero,
-                labelPadding: .symmetric(horizontal: 10, vertical: 0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                  side: BorderSide(
-                      color: ColorUtils.borderColor,
-                      width: appStore.isDarkMode ? 0.2 : 1),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.85,
+            ),
+            itemCount: parcelTypeList.length,
+            itemBuilder: (context, index) {
+              final item = parcelTypeList[index];
+              bool isSelected = parcelTypeCont.text == item.label;
+              return GestureDetector(
+                onTap: () {
+                  parcelTypeCont.text = item.label!;
+                  setState(() {});
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isSelected ? ColorUtils.colorPrimary : Colors.grey.withOpacity(0.3),
+                      width: isSelected ? 2 : 1,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        ServiceIconHelper.getIconPath(item.label ?? ''),
+                        height: 40,
+                        width: 40,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        item.label!,
+                        style: primaryTextStyle(
+                          size: 14,
+                          color: isSelected ? ColorUtils.colorPrimary : textPrimaryColorGlobal,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
-              ).onTap(() {
-                parcelTypeCont.text = item.label!;
-                setState(() {});
-              });
-            }).toList(),
+              );
+            },
           ),
           16.height,
           Row(
