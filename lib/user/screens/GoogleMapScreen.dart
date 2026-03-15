@@ -116,6 +116,82 @@ class _GoogleMapScreenState extends State<GoogleMapScreen>
             onMapTypeChanged: (MapType mapType) {
               //
             },
+            selectedPlaceWidgetBuilder: (context, selectedPlace, state, isSearchBarFocused) {
+              if (state == SearchingState.Searching) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (selectedPlace == null) return const SizedBox.shrink();
+
+              String placeName = selectedPlace.name ?? '';
+              String formattedAddress = selectedPlace.formattedAddress ?? '';
+              String fullAddress = placeName;
+              if (placeName.isNotEmpty && formattedAddress.isNotEmpty && !formattedAddress.startsWith(placeName)) {
+                fullAddress = "$placeName, $formattedAddress";
+              } else if (placeName.isEmpty) {
+                fullAddress = formattedAddress;
+              }
+
+              return Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (placeName.isNotEmpty) ...[
+                            Text(
+                              placeName,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                          Text(
+                            formattedAddress,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  this.selectedPlace = selectedPlace;
+                                  PlaceAddressModel selectedModel = PlaceAddressModel(
+                                    placeId: selectedPlace.placeId ?? '',
+                                    latitude: selectedPlace.geometry?.location.lat ?? 0.0,
+                                    longitude: selectedPlace.geometry?.location.lng ?? 0.0,
+                                    placeAddress: fullAddress,
+                                  );
+                                  print("===============KK${selectedModel.toJson().toString()}");
+                                  finish(context, selectedModel);
+                                });
+                              },
+                              child: Text(buildButtonText(), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
           ).expand(),
         ],
       ),
