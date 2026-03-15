@@ -2,3 +2,10 @@
 # FVM Version Cache
 .fvm/
 .env
+
+# Temporary scripts
+*.py
+
+# Build outputs
+build/
+.dart_tool/
