@@ -3,17 +3,19 @@ class RiderModel {
   String? name;
   String? email;
   String? contactNumber;
+  String? profileImage;
   double? latitude;
   double? longitude;
   double? distance; // calculated local
 
-  RiderModel({this.id, this.name, this.email, this.contactNumber, this.latitude, this.longitude});
+  RiderModel({this.id, this.name, this.email, this.contactNumber, this.profileImage, this.latitude, this.longitude});
 
   RiderModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
     contactNumber = json['contact_number'];
+    profileImage = json['profile_image'];
     // Assuming backend might send coordinates if tracking is active
     latitude = json['latitude'] != null ? double.tryParse(json['latitude'].toString()) : null;
     longitude = json['longitude'] != null ? double.tryParse(json['longitude'].toString()) : null;

@@ -122,6 +122,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   bool isDeliverNow = true;
   List<RiderModel> availableRiders = [];
   int? selectedRiderId;
+  bool isRidersLoading = false;
   int isSelected = 1;
 
   bool? isCash = false;
@@ -245,6 +246,21 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
     }
   }
 
+  fetchRiders() async {
+    setState(() {
+      isRidersLoading = true;
+    });
+    try {
+      var res = await getAvailableRiders(cityData?.id.toString());
+      availableRiders = res.data ?? [];
+    } catch (e) {
+      log(e);
+    }
+    setState(() {
+      isRidersLoading = false;
+    });
+  }
+
   Future<void> init() async {
     try {
       pickupCountryCode = CountryModel.fromJson(getJSONAsync(COUNTRY_DATA))
@@ -260,6 +276,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       await getStaticDetailsForOrder();
       getAddressData = await getAddressList(page: 1);
       await getCouponList();
+      await fetchRiders();
       if (widget.orderData != null) {
         if (widget.orderData!.totalWeight != 0)
           weightController.text = widget.orderData!.totalWeight!.toString();
@@ -489,6 +506,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       "fixed_charges": totalAmountResponse!.fixedAmount!.toDouble(),
       "parent_order_id": "",
       "bid_type": biddingSelectedOption ? 1 : 0,
+      if (selectedRiderId != null) "delivery_man_id": selectedRiderId,
       "total_amount": calculateTotalAmount(),
       "weight_charge": totalAmountResponse!.weightAmount!.toDouble(),
       "distance_charge": totalAmountResponse!.distanceAmount!.toDouble(),
@@ -1249,7 +1267,49 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
         Column(
           crossAxisAlignment: .start,
           children: [
-            Text(language.location, style: primaryTextStyle()),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(language.location, style: primaryTextStyle()),
+                TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(defaultRadius))),
+                      context: context,
+                      builder: (context) {
+                        return PickAddressBottomSheet(
+                          onAddNewAddress: () async {
+                            pop();
+                            await showMapScreen(isPick: true, isSaveAddress: false);
+                          },
+                          onPick: (address) {
+                            pickAddressCont.text = address.address ?? "";
+                            pickLat = address.latitude.toString();
+                            pickLong = address.longitude.toString();
+                            pickPhoneCont.text =
+                                address.contactNumber.validate().substring(4);
+                            setState(() {});
+                          },
+                        );
+                      },
+                    ).then((value) {
+                      addressList = (getStringListAsync(RECENT_ADDRESS_LIST) ?? [])
+                          .map((e) => UseraddressDetail.fromJson(jsonDecode(e)))
+                          .toList();
+                      if (addressList.isNotEmpty) {
+                        pickAddressData = addressList.first;
+                        deliveryAddressData = addressList.first;
+                      }
+                      setState(() {});
+                    });
+                  },
+                  child: Text("Pick from Saved Addresses",
+                      style: primaryTextStyle(color: ColorUtils.colorPrimary)),
+                ),
+              ],
+            ),
             8.height,
             AppTextField(
               controller: pickAddressCont,
@@ -1417,7 +1477,49 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
         Column(
           crossAxisAlignment: .start,
           children: [
-            Text(language.deliveryLocation, style: primaryTextStyle()),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(language.deliveryLocation, style: primaryTextStyle()),
+                TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(defaultRadius))),
+                      context: context,
+                      builder: (context) {
+                        return PickAddressBottomSheet(
+                          onAddNewAddress: () async {
+                            pop();
+                            await showMapScreen(isPick: false, isSaveAddress: false);
+                          },
+                          onPick: (address) {
+                            deliverAddressCont.text = address.address ?? "";
+                            deliverLat = address.latitude.toString();
+                            deliverLong = address.longitude.toString();
+                            deliverPhoneCont.text =
+                                address.contactNumber.validate().substring(4);
+                            setState(() {});
+                          },
+                        );
+                      },
+                    ).then((value) {
+                      addressList = (getStringListAsync(RECENT_ADDRESS_LIST) ?? [])
+                          .map((e) => UseraddressDetail.fromJson(jsonDecode(e)))
+                          .toList();
+                      if (addressList.isNotEmpty) {
+                        pickAddressData = addressList.first;
+                        deliveryAddressData = addressList.first;
+                      }
+                      setState(() {});
+                    });
+                  },
+                  child: Text("Pick from Saved Addresses",
+                      style: primaryTextStyle(color: ColorUtils.colorPrimary)),
+                ),
+              ],
+            ),
             8.height,
             AppTextField(
               controller: deliverAddressCont,
@@ -1590,10 +1692,68 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   Widget createOrderWidget4() {
     return Column(
       children: [
+        if (availableRiders.isNotEmpty)
+          Container(
+            height: 120,
+            margin: EdgeInsets.only(bottom: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Available Riders Near You", style: boldTextStyle()),
+                8.height,
+                Expanded(
+                  child: isRidersLoading
+                      ? loaderWidget()
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: availableRiders.length,
+                          itemBuilder: (context, index) {
+                            var rider = availableRiders[index];
+                            bool isSelected = selectedRiderId == rider.id;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedRiderId = rider.id;
+                                });
+                              },
+                              child: Container(
+                                width: 100,
+                                margin: EdgeInsets.only(right: 8),
+                                decoration: boxDecorationWithRoundedCorners(
+                                  borderRadius: BorderRadius.circular(defaultRadius),
+                                  border: Border.all(
+                                      color: isSelected
+                                          ? ColorUtils.colorPrimary
+                                          : Colors.grey.withOpacity(0.2)),
+                                  backgroundColor: isSelected
+                                      ? ColorUtils.colorPrimary.withOpacity(0.1)
+                                      : Colors.transparent,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage: NetworkImage(rider.profileImage.validate()),
+                                      onBackgroundImageError: (_, __) {},
+                                      child: (rider.profileImage.validate().isEmpty) ? Icon(Icons.person) : null,
+                                    ),
+                                    4.height,
+                                    Text(rider.name ?? '', style: primaryTextStyle(size: 14), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    Text('${rider.distance ?? 0} km away', style: secondaryTextStyle(size: 10)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
+          ),
         markers.isNotEmpty
             ? Container(
                 width: context.width(),
-                height: context.height() * 0.80,
+                height: context.height() * 0.60,
                 child: GoogleMap(
                   markers: markers.map((e) => e).toSet(),
                   polylines: _polylines,
@@ -2392,6 +2552,11 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                     ),
                   );
                   getDistance();
+                  setPolylines().then((_) {
+                    if (_polylines.isNotEmpty) {
+                      setMapFitToCenter(_polylines);
+                    }
+                  });
                   setState(() {});
                 }
                 if (selectedTabIndex != 4) {
