@@ -40,7 +40,7 @@ const String FIREBASE_APP_ID_IOS = "FIREBASE_APP_ID_IOS";
 //for ios
 const String ANDROID_CLIENT_ID = 'ANDROID_CLIENT_ID';
 const String IOS_CLIENT_ID = 'IOS_CLIENT_ID';
-const String IOS_BUNDLE_ID = 'com.mighty.delivery';
+const String IOS_BUNDLE_ID = 'com.ibk.delivery';
 //endregion
 
 //region languages and phone code
