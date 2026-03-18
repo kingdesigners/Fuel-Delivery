@@ -27,10 +27,10 @@ const mOneSignalChannelId = 'ONESIGNAL_CHANNEL_ID';
 // These usually come from your firebase_options.dart,
 // but you can point them to .env if you prefer
 String get FIREBASE_API_KEY => dotenv.env['FIREBASE_API_KEY'] ?? "";
-const String FIREBASE_APP_ID = "1:487693761017:android:823808565807703766e528";
-const String FIREBASE_MESSAGING_SENDER_ID = "487693761017";
-const String FIREBASE_PROJECT_ID = "ibk-delivery";
-const String FIREBASE_STORAGE_BUCKET = "ibk-delivery.firebasestorage.app";
+const String FIREBASE_APP_ID = "1:463292593569:android:b44c16723afe44844647e0";
+const String FIREBASE_MESSAGING_SENDER_ID = "463292593569";
+const String FIREBASE_PROJECT_ID = "ibk-humergy-official";
+const String FIREBASE_STORAGE_BUCKET = "ibk-humergy-official.firebasestorage.app";
 //endregion
 
 // ... Rest of your file stays the same ...
