@@ -1288,22 +1288,17 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                             pickAddressCont.text = address.address ?? "";
                             pickLat = address.latitude.toString();
                             pickLong = address.longitude.toString();
-                            pickPhoneCont.text =
-                                address.contactNumber.validate().substring(4);
+                            String phone = address.contactNumber.validate();
+                            if (phone.length > 4) {
+                              pickPhoneCont.text = phone.substring(4);
+                            } else {
+                              pickPhoneCont.text = phone;
+                            }
                             setState(() {});
                           },
                         );
                       },
-                    ).then((value) {
-                      addressList = (getStringListAsync(RECENT_ADDRESS_LIST) ?? [])
-                          .map((e) => UseraddressDetail.fromJson(jsonDecode(e)))
-                          .toList();
-                      if (addressList.isNotEmpty) {
-                        pickAddressData = addressList.first;
-                        deliveryAddressData = addressList.first;
-                      }
-                      setState(() {});
-                    });
+                    );
                   },
                   child: Text("Pick from Saved Addresses",
                       style: primaryTextStyle(color: ColorUtils.colorPrimary)),
@@ -1347,23 +1342,17 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                             pickAddressCont.text = address.address ?? "";
                             pickLat = address.latitude.toString();
                             pickLong = address.longitude.toString();
-                            pickPhoneCont.text =
-                                address.contactNumber.validate().substring(4);
+                            String phone = address.contactNumber.validate();
+                            if (phone.length > 4) {
+                              pickPhoneCont.text = phone.substring(4);
+                            } else {
+                              pickPhoneCont.text = phone;
+                            }
                             setState(() {});
                           },
                         );
                       },
-                    ).then((value) {
-                      addressList = (getStringListAsync(RECENT_ADDRESS_LIST) ??
-                          [])
-                          .map((e) => UseraddressDetail.fromJson(jsonDecode(e)))
-                          .toList();
-                      if (addressList.isNotEmpty) {
-                        pickAddressData = addressList.first;
-                        deliveryAddressData = addressList.first;
-                      }
-                      setState(() {});
-                    });
+                    );
                   }
                 } else {
                   return;
@@ -1498,22 +1487,17 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                             deliverAddressCont.text = address.address ?? "";
                             deliverLat = address.latitude.toString();
                             deliverLong = address.longitude.toString();
-                            deliverPhoneCont.text =
-                                address.contactNumber.validate().substring(4);
+                            String phone = address.contactNumber.validate();
+                            if (phone.length > 4) {
+                              deliverPhoneCont.text = phone.substring(4);
+                            } else {
+                              deliverPhoneCont.text = phone;
+                            }
                             setState(() {});
                           },
                         );
                       },
-                    ).then((value) {
-                      addressList = (getStringListAsync(RECENT_ADDRESS_LIST) ?? [])
-                          .map((e) => UseraddressDetail.fromJson(jsonDecode(e)))
-                          .toList();
-                      if (addressList.isNotEmpty) {
-                        pickAddressData = addressList.first;
-                        deliveryAddressData = addressList.first;
-                      }
-                      setState(() {});
-                    });
+                    );
                   },
                   child: Text("Pick from Saved Addresses",
                       style: primaryTextStyle(color: ColorUtils.colorPrimary)),
@@ -1557,23 +1541,17 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                             deliverAddressCont.text = address.address ?? "";
                             deliverLat = address.latitude.toString();
                             deliverLong = address.longitude.toString();
-                            deliverPhoneCont.text =
-                                address.contactNumber.validate().substring(4);
+                            String phone = address.contactNumber.validate();
+                            if (phone.length > 4) {
+                              deliverPhoneCont.text = phone.substring(4);
+                            } else {
+                              deliverPhoneCont.text = phone;
+                            }
                             setState(() {});
                           },
                         );
                       },
-                    ).then((value) {
-                      addressList = (getStringListAsync(RECENT_ADDRESS_LIST) ??
-                          [])
-                          .map((e) => UseraddressDetail.fromJson(jsonDecode(e)))
-                          .toList();
-                      if (addressList.isNotEmpty) {
-                        pickAddressData = addressList.first;
-                        deliveryAddressData = addressList.first;
-                      }
-                      setState(() {});
-                    });
+                    );
                   }
                 } else {
                   return;

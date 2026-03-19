@@ -161,18 +161,22 @@ class _GoogleMapScreenState extends State<GoogleMapScreen>
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: saveToMyAddresses,
-                                onChanged: (val) {
-                                  setState(() {
-                                    saveToMyAddresses = val ?? false;
-                                  });
-                                },
-                              ),
-                              const Text("Save to My Addresses"),
-                            ],
+                          StatefulBuilder(
+                            builder: (BuildContext context, StateSetter setState) {
+                              return Row(
+                                children: [
+                                  Checkbox(
+                                    value: saveToMyAddresses,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        saveToMyAddresses = val ?? false;
+                                      });
+                                    },
+                                  ),
+                                  const Text("Save to My Addresses"),
+                                ],
+                              );
+                            }
                           ),
                           const SizedBox(height: 16),
                           SizedBox(
