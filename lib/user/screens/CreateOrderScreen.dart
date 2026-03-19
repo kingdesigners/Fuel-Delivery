@@ -5,10 +5,13 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'MyAddressListScreen.dart';
+import '../../main/models/AddressListModel.dart';
+import 'ServiceIconHelper.dart';
+import '../../main/models/RiderModel.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'ServiceIconHelper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +21,6 @@ import '../../extensions/extension_util/int_extensions.dart';
 import '../../extensions/extension_util/string_extensions.dart';
 import '../../extensions/extension_util/widget_extensions.dart';
 import '../../main/models/CouponListResponseModel.dart';
-import '../../main/models/RiderModel.dart';
 import '../../main/models/PlaceAddressModel.dart';
 import '../../main/screens/CouponListScreen.dart';
 import '../../main/utils/DataProviders.dart';
@@ -118,6 +120,9 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   int selectedTabIndex = 0;
 
   bool isDeliverNow = true;
+  List<RiderModel> availableRiders = [];
+  int? selectedRiderId;
+  bool isRidersLoading = false;
   int isSelected = 1;
 
   bool? isCash = false;
@@ -130,10 +135,6 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   List<UseraddressDetail> addressList = [];
   UseraddressDetail? pickAddressData;
   UseraddressDetail? deliveryAddressData;
-
-  List<RiderModel> availableRiders = [];
-  RiderModel? selectedRider;
-
   num weightCharge = 0;
   num distanceCharge = 0;
   num totalExtraCharge = 0;
@@ -152,6 +153,8 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
+  final List<Map<String, String>> selectedPackingSymbols = [];
+  final List<Map<String, String>> packingSymbolsItems = getPackagingSymbols();
   int insuranceSelectedOption = 1;
   List<String> appBarTitleList = [
     language.createOrder,
@@ -173,18 +176,6 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
     afterBuildCreated(() {
       init();
     });
-  }
-
-  getAvailableRidersData() async {
-    try {
-      final res = await getAvailableRiders(getIntAsync(CITY_ID).toString());
-      if (res.data != null) {
-        // Here we could calculate distance if lat/long is present, but for now just take the active ones
-        availableRiders = res.data!;
-      }
-    } catch (e) {
-      print("Failed to fetch riders: $e");
-    }
   }
 
   getStaticDetailsForOrder() async {
@@ -255,6 +246,21 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
     }
   }
 
+  fetchRiders() async {
+    setState(() {
+      isRidersLoading = true;
+    });
+    try {
+      var res = await getAvailableRiders(cityData?.id.toString());
+      availableRiders = res.data ?? [];
+    } catch (e) {
+      log(e);
+    }
+    setState(() {
+      isRidersLoading = false;
+    });
+  }
+
   Future<void> init() async {
     try {
       pickupCountryCode = CountryModel.fromJson(getJSONAsync(COUNTRY_DATA))
@@ -269,8 +275,8 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           : CountryModel.fromJson(getJSONAsync(COUNTRY_DATA)).code.validate();
       await getStaticDetailsForOrder();
       getAddressData = await getAddressList(page: 1);
-      await getAvailableRidersData();
       await getCouponList();
+      await fetchRiders();
       if (widget.orderData != null) {
         if (widget.orderData!.totalWeight != 0)
           weightController.text = widget.orderData!.totalWeight!.toString();
@@ -425,6 +431,9 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
 
   createOrderApiCall(String orderStatus) async {
     List<Map<String, String>> packaging_symbols = [];
+    selectedPackingSymbols.map((item) {
+      packaging_symbols.add({'key': item["key"]!, 'title': item['title']!});
+    }).toList();
     extraChargeList.clear();
     if (totalAmountResponse!.extraCharges != null) {
       totalAmountResponse!.extraCharges!.forEach((element) {
@@ -447,7 +456,6 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       "date": DateTime.now().toString(),
       "country_id": getIntAsync(COUNTRY_ID).toString(),
       "city_id": getIntAsync(CITY_ID).toString(),
-      if (selectedRider != null) "delivery_man_id": selectedRider!.id.toString(),
       //   if (appStore.isVehicleOrder != 0) "vehicle_id": selectedVehicle.toString(),
       if (!selectedVehicle.toString().isEmptyOrNull &&
           selectedVehicle != 0 &&
@@ -498,6 +506,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       "fixed_charges": totalAmountResponse!.fixedAmount!.toDouble(),
       "parent_order_id": "",
       "bid_type": biddingSelectedOption ? 1 : 0,
+      if (selectedRiderId != null) "delivery_man_id": selectedRiderId,
       "total_amount": calculateTotalAmount(),
       "weight_charge": totalAmountResponse!.weightAmount!.toDouble(),
       "distance_charge": totalAmountResponse!.distanceAmount!.toDouble(),
@@ -1138,18 +1147,17 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           8.height,
           GridView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 0.8,
+              childAspectRatio: 0.85,
             ),
             itemCount: parcelTypeList.length,
             itemBuilder: (context, index) {
               final item = parcelTypeList[index];
-              final isSelected = parcelTypeCont.text == item.label;
-              final iconPath = ServiceIconHelper.getIconPath(item.label!);
+              bool isSelected = parcelTypeCont.text == item.label;
               return GestureDetector(
                 onTap: () {
                   parcelTypeCont.text = item.label!;
@@ -1157,27 +1165,28 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: context.scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(defaultRadius),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isSelected ? ColorUtils.colorPrimary : ColorUtils.borderColor,
-                      width: isSelected ? 2.0 : (appStore.isDarkMode ? 0.2 : 1.0),
+                      color: isSelected ? ColorUtils.colorPrimary : Colors.grey.withOpacity(0.3),
+                      width: isSelected ? 2 : 1,
                     ),
                   ),
-                  padding: EdgeInsets.all(8),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        iconPath,
+                        ServiceIconHelper.getIconPath(item.label ?? ''),
                         height: 40,
                         width: 40,
-                        color: isSelected ? ColorUtils.colorPrimary : (appStore.isDarkMode ? Colors.white : Colors.black87),
                       ),
-                      8.height,
+                      const SizedBox(height: 8),
                       Text(
                         item.label!,
-                        style: isSelected ? primaryTextStyle(color: ColorUtils.colorPrimary, size: 12) : secondaryTextStyle(size: 12),
+                        style: primaryTextStyle(
+                          size: 14,
+                          color: isSelected ? ColorUtils.colorPrimary : textPrimaryColorGlobal,
+                        ),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -1189,6 +1198,63 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
             },
           ),
           16.height,
+          Row(
+            mainAxisAlignment: .spaceBetween,
+            children: [
+              Text(language.labels, style: primaryTextStyle()),
+              Icon(Icons.info,
+                      color: appStore.isDarkMode
+                          ? Colors.white.withOpacity(0.7)
+                          : ColorUtils.colorPrimary)
+                  .onTap(() {
+                PackagingSymbolsInfo().launch(context);
+              })
+            ],
+          ),
+          16.height,
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: packingSymbolsItems.map((item) {
+              bool isSelected = selectedPackingSymbols.contains(item);
+              return Container(
+                width: 70,
+                decoration: boxDecorationWithRoundedCorners(),
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      item['image']!,
+                      width: 24,
+                      height: 24,
+                      color: appStore.isDarkMode
+                          ? Colors.white.withOpacity(0.7)
+                          : ColorUtils.colorPrimary,
+                    ).center().paddingAll(10),
+                    if (isSelected)
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Icon(
+                          Icons.check_circle,
+                          color: Colors.green,
+                          size: 16,
+                        ),
+                      ),
+                  ],
+                ),
+              ).onTap(() {
+                setState(() {
+                  if (isSelected) {
+                    selectedPackingSymbols.remove(item);
+                  } else {
+                    selectedPackingSymbols.add(item);
+                  }
+                });
+
+                setState(() {});
+              });
+            }).toList(),
+          ),
         ],
       );
     });
@@ -1198,28 +1264,47 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: TextButton.icon(
-            onPressed: () {
-              setState(() {
-                pickAddressCont.text = "123 Fuel Store St, City Center";
-                pickLat = "37.7749"; // Default Store Lat
-                pickLong = "-122.4194"; // Default Store Long
-                pickPhoneCont.text = "1234567890";
-                pickPersonNameCont.text = "Store Manager";
-                pickupCountryCode = "+1";
-              });
-            },
-            icon: Icon(Icons.store, size: 18, color: ColorUtils.colorPrimary),
-            label: Text("Use Store Address", style: primaryTextStyle(color: ColorUtils.colorPrimary, size: 14)),
-          ),
-        ),
-        8.height,
         Column(
           crossAxisAlignment: .start,
           children: [
-            Text(language.location, style: primaryTextStyle()),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(language.location, style: primaryTextStyle()),
+                TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(defaultRadius))),
+                      context: context,
+                      builder: (context) {
+                        return PickAddressBottomSheet(
+                          onAddNewAddress: () async {
+                            pop();
+                            await showMapScreen(isPick: true, isSaveAddress: false);
+                          },
+                          onPick: (address) {
+                            pickAddressCont.text = address.address ?? "";
+                            pickLat = address.latitude.toString();
+                            pickLong = address.longitude.toString();
+                            String phone = address.contactNumber.validate();
+                            if (phone.length > 4) {
+                              pickPhoneCont.text = phone.substring(4);
+                            } else {
+                              pickPhoneCont.text = phone;
+                            }
+                            setState(() {});
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: Text("Pick from Saved Addresses",
+                      style: primaryTextStyle(color: ColorUtils.colorPrimary)),
+                ),
+              ],
+            ),
             8.height,
             AppTextField(
               controller: pickAddressCont,
@@ -1257,23 +1342,17 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                             pickAddressCont.text = address.address ?? "";
                             pickLat = address.latitude.toString();
                             pickLong = address.longitude.toString();
-                            pickPhoneCont.text =
-                                address.contactNumber.validate().substring(4);
+                            String phone = address.contactNumber.validate();
+                            if (phone.length > 4) {
+                              pickPhoneCont.text = phone.substring(4);
+                            } else {
+                              pickPhoneCont.text = phone;
+                            }
                             setState(() {});
                           },
                         );
                       },
-                    ).then((value) {
-                      addressList = (getStringListAsync(RECENT_ADDRESS_LIST) ??
-                          [])
-                          .map((e) => UseraddressDetail.fromJson(jsonDecode(e)))
-                          .toList();
-                      if (addressList.isNotEmpty) {
-                        pickAddressData = addressList.first;
-                        deliveryAddressData = addressList.first;
-                      }
-                      setState(() {});
-                    });
+                    );
                   }
                 } else {
                   return;
@@ -1376,62 +1455,6 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           maxLines: 2,
           minLines: 2,
         ),
-        16.height,
-        if (availableRiders.isNotEmpty) ...[
-          Text("Available Riders Near You", style: primaryTextStyle()),
-          8.height,
-          Container(
-            height: 120,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: availableRiders.length,
-              itemBuilder: (context, index) {
-                final rider = availableRiders[index];
-                bool isSelected = selectedRider?.id == rider.id;
-
-                // Simulate distance if not provided by backend
-                String distanceText = rider.distance != null
-                    ? "${rider.distance!.toStringAsFixed(1)} km away"
-                    : "${(2.0 + index * 1.5).toStringAsFixed(1)} km away";
-
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedRider = rider;
-                    });
-                  },
-                  child: Container(
-                    width: 140,
-                    margin: EdgeInsets.only(right: 12),
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: isSelected ? ColorUtils.colorPrimary.withOpacity(0.1) : context.cardColor,
-                      border: Border.all(
-                        color: isSelected ? ColorUtils.colorPrimary : ColorUtils.borderColor,
-                        width: isSelected ? 2 : 1,
-                      ),
-                      borderRadius: BorderRadius.circular(defaultRadius),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundColor: ColorUtils.colorPrimary.withOpacity(0.2),
-                          child: Icon(Icons.person, color: ColorUtils.colorPrimary),
-                        ),
-                        8.height,
-                        Text(rider.name ?? "Rider", style: boldTextStyle(size: 14), maxLines: 1, overflow: TextOverflow.ellipsis),
-                        4.height,
-                        Text(distanceText, style: secondaryTextStyle(size: 12)),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
       ],
     );
   }
@@ -1443,7 +1466,44 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
         Column(
           crossAxisAlignment: .start,
           children: [
-            Text(language.deliveryLocation, style: primaryTextStyle()),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(language.deliveryLocation, style: primaryTextStyle()),
+                TextButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(defaultRadius))),
+                      context: context,
+                      builder: (context) {
+                        return PickAddressBottomSheet(
+                          onAddNewAddress: () async {
+                            pop();
+                            await showMapScreen(isPick: false, isSaveAddress: false);
+                          },
+                          onPick: (address) {
+                            deliverAddressCont.text = address.address ?? "";
+                            deliverLat = address.latitude.toString();
+                            deliverLong = address.longitude.toString();
+                            String phone = address.contactNumber.validate();
+                            if (phone.length > 4) {
+                              deliverPhoneCont.text = phone.substring(4);
+                            } else {
+                              deliverPhoneCont.text = phone;
+                            }
+                            setState(() {});
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: Text("Pick from Saved Addresses",
+                      style: primaryTextStyle(color: ColorUtils.colorPrimary)),
+                ),
+              ],
+            ),
             8.height,
             AppTextField(
               controller: deliverAddressCont,
@@ -1481,23 +1541,17 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                             deliverAddressCont.text = address.address ?? "";
                             deliverLat = address.latitude.toString();
                             deliverLong = address.longitude.toString();
-                            deliverPhoneCont.text =
-                                address.contactNumber.validate().substring(4);
+                            String phone = address.contactNumber.validate();
+                            if (phone.length > 4) {
+                              deliverPhoneCont.text = phone.substring(4);
+                            } else {
+                              deliverPhoneCont.text = phone;
+                            }
                             setState(() {});
                           },
                         );
                       },
-                    ).then((value) {
-                      addressList = (getStringListAsync(RECENT_ADDRESS_LIST) ??
-                          [])
-                          .map((e) => UseraddressDetail.fromJson(jsonDecode(e)))
-                          .toList();
-                      if (addressList.isNotEmpty) {
-                        pickAddressData = addressList.first;
-                        deliveryAddressData = addressList.first;
-                      }
-                      setState(() {});
-                    });
+                    );
                   }
                 } else {
                   return;
@@ -1616,10 +1670,68 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   Widget createOrderWidget4() {
     return Column(
       children: [
+        if (availableRiders.isNotEmpty)
+          Container(
+            height: 120,
+            margin: EdgeInsets.only(bottom: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Available Riders Near You", style: boldTextStyle()),
+                8.height,
+                Expanded(
+                  child: isRidersLoading
+                      ? loaderWidget()
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: availableRiders.length,
+                          itemBuilder: (context, index) {
+                            var rider = availableRiders[index];
+                            bool isSelected = selectedRiderId == rider.id;
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedRiderId = rider.id;
+                                });
+                              },
+                              child: Container(
+                                width: 100,
+                                margin: EdgeInsets.only(right: 8),
+                                decoration: boxDecorationWithRoundedCorners(
+                                  borderRadius: BorderRadius.circular(defaultRadius),
+                                  border: Border.all(
+                                      color: isSelected
+                                          ? ColorUtils.colorPrimary
+                                          : Colors.grey.withOpacity(0.2)),
+                                  backgroundColor: isSelected
+                                      ? ColorUtils.colorPrimary.withOpacity(0.1)
+                                      : Colors.transparent,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage: NetworkImage(rider.profileImage.validate()),
+                                      onBackgroundImageError: (_, __) {},
+                                      child: (rider.profileImage.validate().isEmpty) ? Icon(Icons.person) : null,
+                                    ),
+                                    4.height,
+                                    Text(rider.name ?? '', style: primaryTextStyle(size: 14), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    Text('${rider.distance ?? 0} km away', style: secondaryTextStyle(size: 10)),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
+          ),
         markers.isNotEmpty
             ? Container(
                 width: context.width(),
-                height: context.height() * 0.80,
+                height: context.height() * 0.60,
                 child: GoogleMap(
                   markers: markers.map((e) => e).toSet(),
                   polylines: _polylines,
@@ -2418,6 +2530,11 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                     ),
                   );
                   getDistance();
+                  setPolylines().then((_) {
+                    if (_polylines.isNotEmpty) {
+                      setMapFitToCenter(_polylines);
+                    }
+                  });
                   setState(() {});
                 }
                 if (selectedTabIndex != 4) {

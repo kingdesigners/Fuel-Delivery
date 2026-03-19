@@ -7,6 +7,8 @@ import '../../main.dart';
 import '../../main/components/CommonScaffoldComponent.dart';
 import '../../main/models/PlaceAddressModel.dart';
 import '../../main/utils/Constants.dart';
+import '../../main/network/RestApis.dart';
+import '../../extensions/shared_pref.dart';
 
 class GoogleMapScreen extends StatefulWidget {
   static final kInitialPosition = LatLng(-33.8567844, 151.213108);
@@ -28,6 +30,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen>
   PickResult? selectedPlace;
   bool showPlacePickerInContainer = false;
   bool showGoogleMapInContainer = false;
+  bool saveToMyAddresses = false;
   GlobalKey<_GoogleMapScreenState> placePickerKey =
       GlobalKey<_GoogleMapScreenState>();
 
@@ -158,6 +161,24 @@ class _GoogleMapScreenState extends State<GoogleMapScreen>
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 16),
+                          StatefulBuilder(
+                            builder: (BuildContext context, StateSetter setState) {
+                              return Row(
+                                children: [
+                                  Checkbox(
+                                    value: saveToMyAddresses,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        saveToMyAddresses = val ?? false;
+                                      });
+                                    },
+                                  ),
+                                  const Text("Save to My Addresses"),
+                                ],
+                              );
+                            }
+                          ),
+                          const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
@@ -169,18 +190,38 @@ class _GoogleMapScreenState extends State<GoogleMapScreen>
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  this.selectedPlace = selectedPlace;
-                                  PlaceAddressModel selectedModel = PlaceAddressModel(
-                                    placeId: selectedPlace.placeId ?? '',
-                                    latitude: selectedPlace.geometry?.location.lat ?? 0.0,
-                                    longitude: selectedPlace.geometry?.location.lng ?? 0.0,
-                                    placeAddress: fullAddress,
-                                  );
-                                  print("===============KK${selectedModel.toJson().toString()}");
-                                  finish(context, selectedModel);
-                                });
+                              onPressed: () async {
+                                this.selectedPlace = selectedPlace;
+                                PlaceAddressModel selectedModel = PlaceAddressModel(
+                                  placeId: selectedPlace.placeId ?? '',
+                                  latitude: selectedPlace.geometry?.location.lat ?? 0.0,
+                                  longitude: selectedPlace.geometry?.location.lng ?? 0.0,
+                                  placeAddress: fullAddress,
+                                );
+
+                                if (saveToMyAddresses) {
+                                  appStore.setLoading(true);
+                                  try {
+                                      Map req = {
+                                        "user_id": getIntAsync(USER_ID),
+                                        "address": fullAddress,
+                                        "latitude": selectedModel.latitude,
+                                        "longitude": selectedModel.longitude,
+                                        "contact_number": (await getSharedPref()).getString(USER_CONTACT_NUMBER) ?? '',
+                                        "city_id": getIntAsync(CITY_ID).toString(),
+                                        "country_id": getIntAsync(COUNTRY_ID).toString(),
+                                        "address_type": widget.isPick ? 'Pickup' : 'Delivery'
+                                      };
+                                      await saveUserAddress(req);
+                                  } catch (e) {
+                                      print("Failed to save address: $e");
+                                  } finally {
+                                      appStore.setLoading(false);
+                                  }
+                                }
+
+                                print("===============KK${selectedModel.toJson().toString()}");
+                                finish(context, selectedModel);
                               },
                               child: Text(buildButtonText(), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                             ),

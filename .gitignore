@@ -2,3 +2,13 @@
 # FVM Version Cache
 .fvm/
 .env
+
+# Temporary scripts
+*.py
+
+# Build outputs
+build/
+.dart_tool/
+
+# Firebase configuration
+android/app/google-services.json
