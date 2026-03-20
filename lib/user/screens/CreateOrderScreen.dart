@@ -39,6 +39,7 @@ import '../../main.dart';
 import '../../main/components/CommonScaffoldComponent.dart';
 import '../../main/components/OrderAmountSummaryWidget.dart';
 import '../../main/components/PickAddressBottomSheet.dart';
+import '../../main/components/PickAddressBottomSheet.dart';
 import '../../main/models/CountryListModel.dart';
 import '../../main/models/CreateOrderDetailModel.dart';
 import '../../main/models/ExtraChargeRequestModel.dart';
@@ -507,6 +508,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       "parent_order_id": "",
       "bid_type": biddingSelectedOption ? 1 : 0,
       if (selectedRiderId != null) "delivery_man_id": selectedRiderId,
+      if (selectedRiderId != null) "auto_assign": 0,
       "total_amount": calculateTotalAmount(),
       "weight_charge": totalAmountResponse!.weightAmount!.toDouble(),
       "distance_charge": totalAmountResponse!.distanceAmount!.toDouble(),
