@@ -341,7 +341,7 @@ class AuthServices {
           } else {
             appStore.setLoading(false);
             toast(language.userNotApproveMsg);
-            await logout(getContext, isDeleteAccount: true);
+            await logout(getContext);
             return; // stop execution here
           }
         }
