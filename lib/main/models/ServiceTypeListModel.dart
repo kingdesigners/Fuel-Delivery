@@ -1,17 +1,17 @@
 import 'PaginationModel.dart';
 
-class ParcelTypeListModel {
+class ServiceTypeListModel {
   PaginationModel? pagination;
-  List<ParcelTypeData>? data;
+  List<ServiceTypeData>? data;
 
-  ParcelTypeListModel({this.pagination, this.data});
+  ServiceTypeListModel({this.pagination, this.data});
 
-  ParcelTypeListModel.fromJson(Map<String, dynamic> json) {
+  ServiceTypeListModel.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null ? new PaginationModel.fromJson(json['pagination']) : null;
     if (json['data'] != null) {
-      data = <ParcelTypeData>[];
+      data = <ServiceTypeData>[];
       json['data'].forEach((v) {
-        data!.add(new ParcelTypeData.fromJson(v));
+        data!.add(new ServiceTypeData.fromJson(v));
       });
     }
   }
@@ -28,7 +28,7 @@ class ParcelTypeListModel {
   }
 }
 
-class ParcelTypeData {
+class ServiceTypeData {
   int? id;
   String? type;
   String? label;
@@ -36,9 +36,9 @@ class ParcelTypeData {
   String? createdAt;
   String? updatedAt;
 
-  ParcelTypeData({this.id, this.type, this.label, this.value, this.createdAt, this.updatedAt});
+  ServiceTypeData({this.id, this.type, this.label, this.value, this.createdAt, this.updatedAt});
 
-  ParcelTypeData.fromJson(Map<String, dynamic> json) {
+  ServiceTypeData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     type = json['type'];
     label = json['label'];

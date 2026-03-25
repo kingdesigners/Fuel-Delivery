@@ -111,7 +111,7 @@ class ReturnOrderScreenState extends State<ReturnOrderScreen> {
         "delivery_point": widget.orderData.pickupPoint!,
         "packaging_symbols": widget.orderData.packagingSymbols,
         "extra_charges": widget.orderData.extraCharges!,
-        "parcel_type": widget.orderData.parcelType!,
+        "service_type": widget.orderData.serviceType!,
         "total_weight": widget.orderData.totalWeight!,
         "total_distance": widget.orderData.totalDistance!,
         "payment_collect_from": paymentCollectFrom,
@@ -124,7 +124,7 @@ class ReturnOrderScreenState extends State<ReturnOrderScreen> {
         "weight_charge": widget.orderData.weightCharge!.toDouble(),
         "reason": reason!.validate().trim() != language.other.trim() ? reason : reasonController.text,
         "distance_charge": widget.orderData.distanceCharge!.toDouble(),
-        "total_parcel": widget.orderData.totalParcel!.toInt(),
+        "total_service_requests": widget.orderData.totalServiceRequests!.toInt(),
         "insurance_charge": widget.orderData.insuranceCharge,
         if (appStore.isSmsOrder == 1) "sms_type": TYPE_TWILIO,
       };

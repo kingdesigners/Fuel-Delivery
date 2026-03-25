@@ -32,7 +32,7 @@ import '../../main/models/LDBaseResponse.dart';
 import '../../main/models/LoginResponse.dart';
 import '../../main/models/NotificationModel.dart';
 import '../../main/models/OrderListModel.dart';
-import '../../main/models/ParcelTypeListModel.dart';
+import '../../main/models/ServiceTypeListModel.dart';
 import '../../main/models/PaymentGatewayListModel.dart';
 import '../../main/screens/LoginScreen.dart';
 import '../../main/utils/Constants.dart';
@@ -304,9 +304,9 @@ Future<OrderDetailModel> getOrderDetails(int id) async {
   //return OrderDetailModel.fromJson(await handleResponse(await buildHttpResponse('order-detail?id=$id', method: HttpMethod.GET)));
 }
 
-/// ParcelType Api
-Future<ParcelTypeListModel> getParcelTypeList({int? page}) async {
-  return ParcelTypeListModel.fromJson(await handleResponse(await buildHttpResponse('staticdata-list?type=parcel_type&per_page=-1', method: HttpMethod.GET)));
+/// ServiceType Api
+Future<ServiceTypeListModel> getServiceTypeList({int? page}) async {
+  return ServiceTypeListModel.fromJson(await handleResponse(await buildHttpResponse('staticdata-list?type=service_type&per_page=-1', method: HttpMethod.GET)));
 }
 
 Future<CountryListModel> getCountryList() async {

@@ -33,7 +33,7 @@ class Data {
   String? countryName;
   int? cityId;
   String? cityName;
-  String? parcelType;
+  String? serviceType;
   int? totalWeight;
   num? totalDistance;
   int? weightCharge;
@@ -51,7 +51,7 @@ class Data {
   // int? fixedCharges;
   // List<ExtraCharges>? extraCharges;
   // double? totalAmount;
-  // int? totalParcel;
+  // int? totalServiceRequests;
   // String? reason;
   // int? pickupConfirmByClient;
   // int? pickupConfirmByDeliveryMan;
@@ -78,7 +78,7 @@ class Data {
     this.countryName,
     this.cityId,
     this.cityName,
-    this.parcelType,
+    this.serviceType,
     this.totalWeight,
     this.totalDistance,
     this.weightCharge,
@@ -96,7 +96,7 @@ class Data {
     // this.fixedCharges,
     // this.extraCharges,
     // this.totalAmount,
-    // this.totalParcel,
+    // this.totalServiceRequests,
     // this.reason,
     // this.pickupConfirmByClient,
     // this.pickupConfirmByDeliveryMan,
@@ -124,7 +124,7 @@ class Data {
     countryName = json['country_name'];
     cityId = json['city_id'];
     cityName = json['city_name'];
-    parcelType = json['parcel_type'];
+    serviceType = json['service_type'];
     totalWeight = json['total_weight'];
     totalDistance = json['total_distance'];
     weightCharge = json['weight_charge'];
@@ -147,7 +147,7 @@ class Data {
     //   });
     // }
     //  totalAmount = json['total_amount'];
-    // totalParcel = json['total_parcel'];
+    // totalServiceRequests = json['total_service_requests'];
     //  reason = json['reason'];
     //  pickupConfirmByClient = json['pickup_confirm_by_client'];
     //  pickupConfirmByDeliveryMan = json['pickup_confirm_by_delivery_man'];
@@ -180,7 +180,7 @@ class Data {
     data['country_name'] = this.countryName;
     data['city_id'] = this.cityId;
     data['city_name'] = this.cityName;
-    data['parcel_type'] = this.parcelType;
+    data['service_type'] = this.serviceType;
     data['total_weight'] = this.totalWeight;
     data['total_distance'] = this.totalDistance;
     data['weight_charge'] = this.weightCharge;
@@ -200,7 +200,7 @@ class Data {
     //   data['extra_charges'] = this.extraCharges!.map((v) => v.toJson()).toList();
     // }
     // data['total_amount'] = this.totalAmount;
-    // data['total_parcel'] = this.totalParcel;
+    // data['total_service_requests'] = this.totalServiceRequests;
     // data['reason'] = this.reason;
     // data['pickup_confirm_by_client'] = this.pickupConfirmByClient;
     // data['pickup_confirm_by_delivery_man'] = this.pickupConfirmByDeliveryMan;

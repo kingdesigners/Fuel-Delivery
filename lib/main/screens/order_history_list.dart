@@ -123,13 +123,13 @@ class OrderHistoryItem extends StatelessWidget {
                     border: Border.all(color: ColorUtils.borderColor, width: appStore.isDarkMode ? 0.2 : 1),
                     backgroundColor: context.cardColor),
                 padding: .all(8),
-                child: Image.asset(parcelTypeIcon(orderData.parcelType.validate()), height: 24, width: 24, color: ColorUtils.colorPrimary),
+                child: Image.asset(serviceTypeIcon(orderData.serviceType.validate()), height: 24, width: 24, color: ColorUtils.colorPrimary),
               ),
               8.width,
               Column(
                 crossAxisAlignment: .start,
                 children: [
-                  Text(orderData.parcelType.validate(), style: boldTextStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(orderData.serviceType.validate(), style: boldTextStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   4.height,
                   Row(
                     children: [

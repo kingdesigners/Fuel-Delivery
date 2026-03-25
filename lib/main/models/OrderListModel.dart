@@ -112,7 +112,7 @@ class OrderData {
   String? countryName;
   int? cityId;
   String? cityName;
-  String? parcelType;
+  String? serviceType;
   num? totalWeight;
   var totalDistance;
   String? pickupDatetime;
@@ -139,7 +139,7 @@ class OrderData {
   num? weightCharge;
   num? distanceCharge;
   num? vehicleCharge;
-  num? totalParcel;
+  num? totalServiceRequests;
   int? autoAssign;
   List<dynamic>? cancelledDeliverManIds;
   int? vehicleId;
@@ -168,7 +168,7 @@ class OrderData {
     this.countryName,
     this.cityId,
     this.cityName,
-    this.parcelType,
+    this.serviceType,
     this.totalWeight,
     this.totalDistance,
     this.pickupDatetime,
@@ -194,7 +194,7 @@ class OrderData {
     this.returnOrderId,
     this.weightCharge,
     this.distanceCharge,
-    this.totalParcel,
+    this.totalServiceRequests,
     this.autoAssign,
     this.cancelledDeliverManIds,
     this.vehicleId,
@@ -225,7 +225,7 @@ class OrderData {
     countryName = json['country_name'];
     cityId = json['city_id'];
     cityName = json['city_name'];
-    parcelType = json['parcel_type'];
+    serviceType = json['service_type'];
     totalWeight = json['total_weight'];
     totalDistance = json['total_distance'];
     pickupDatetime = json['pickup_datetime'];
@@ -252,7 +252,7 @@ class OrderData {
     returnOrderId = json['return_order_id'];
     weightCharge = json['weight_charge'];
     distanceCharge = json['distance_charge'];
-    totalParcel = json['total_parcel'];
+    totalServiceRequests = json['total_service_requests'];
     autoAssign = json['auto_assign'];
     cancelledDeliverManIds = json['cancelled_delivery_man_ids'];
     vehicleId = json['vehicle_id'];
@@ -289,7 +289,7 @@ class OrderData {
     data['country_name'] = this.countryName;
     data['city_id'] = this.cityId;
     data['city_name'] = this.cityName;
-    data['parcel_type'] = this.parcelType;
+    data['service_type'] = this.serviceType;
     data['total_weight'] = this.totalWeight;
     data['total_distance'] = this.totalDistance;
     data['pickup_datetime'] = this.pickupDatetime;
@@ -315,7 +315,7 @@ class OrderData {
     data['return_order_id'] = this.returnOrderId;
     data['weight_charge'] = this.weightCharge;
     data['distance_charge'] = this.distanceCharge;
-    data['total_parcel'] = this.totalParcel;
+    data['total_service_requests'] = this.totalServiceRequests;
     data['auto_assign'] = this.autoAssign;
     data['cancelled_delivery_man_ids'] = this.cancelledDeliverManIds;
     data['bid_type'] = this.bid_type;

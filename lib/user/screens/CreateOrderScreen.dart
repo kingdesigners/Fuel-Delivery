@@ -66,11 +66,11 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   CityDetail? cityData;
-  List<StaticDetails> parcelTypeList = [];
+  List<StaticDetails> serviceTypeList = [];
 
-  TextEditingController parcelTypeCont = TextEditingController();
+  TextEditingController serviceTypeCont = TextEditingController();
   TextEditingController weightController = TextEditingController(text: '1');
-  TextEditingController totalParcelController =
+  TextEditingController totalServiceRequestsController =
       TextEditingController(text: '1');
 
   TextEditingController pickAddressCont = TextEditingController();
@@ -196,8 +196,8 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
 
       if (value.vehicleDetail!.isNotEmpty)
         selectedVehicle = value.vehicleDetail![0].id;
-      parcelTypeList.clear();
-      parcelTypeList.addAll(value.staticDetails!);
+      serviceTypeList.clear();
+      serviceTypeList.addAll(value.staticDetails!);
       appStore.setCurrencyCode(
           value.appSettingDetail!.currencyCode ?? CURRENCY_CODE);
       appStore.setCurrencySymbol(
@@ -257,10 +257,10 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       if (widget.orderData != null) {
         if (widget.orderData!.totalWeight != 0)
           weightController.text = widget.orderData!.totalWeight!.toString();
-        if (widget.orderData!.totalParcel != null)
-          totalParcelController.text =
-              widget.orderData!.totalParcel!.toString();
-        parcelTypeCont.text = widget.orderData!.parcelType.validate();
+        if (widget.orderData!.totalServiceRequests != null)
+          totalServiceRequestsController.text =
+              widget.orderData!.totalServiceRequests!.toString();
+        serviceTypeCont.text = widget.orderData!.serviceType.validate();
 
         pickAddressCont.text =
             widget.orderData!.pickupPoint!.address.validate();
@@ -472,7 +472,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       },
       "packaging_symbols": packaging_symbols,
       "extra_charges": extraChargeList,
-      "parcel_type": parcelTypeCont.text,
+      "service_type": serviceTypeCont.text,
       "total_weight": weightController.text.toDouble(),
       "total_distance":
           totalDistance.toStringAsFixed(digitAfterDecimal).validate(),
@@ -486,7 +486,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       "total_amount": calculateTotalAmount(),
       "weight_charge": totalAmountResponse!.weightAmount!.toDouble(),
       "distance_charge": totalAmountResponse!.distanceAmount!.toDouble(),
-      "total_parcel": totalParcelController.text.toInt(),
+      "total_service_requests": totalServiceRequestsController.text.toInt(),
       "insurance_charge": insuranceAmount,
       if (selectedCoupon?.couponCode != null && isAppliedCoupon == true)
         "discount_amount":
@@ -605,7 +605,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           context,
           primaryColor: ColorUtils.colorPrimary,
           title: "Location Access Needed",
-          note: "We need your location in order to deliver/pickup your parcel",
+          note: "We need your location in order to deliver/pickup your service",
           positiveText: language.ok,
           negativeText: language.cancel,
           onCancel: (p0) => Navigator.pop(context, false),
@@ -1045,11 +1045,11 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
             ],
           ),
           16.height,
-          // Text(language.numberOfParcels, style: boldTextStyle()),
+          // Text(language.numberOfServices, style: boldTextStyle()),
           // 8.height,
           Row(
             children: [
-              Text(language.numberOfParcels, style: primaryTextStyle())
+              Text(language.numberOfServices, style: primaryTextStyle())
                   .expand(),
               Container(
                 decoration: BoxDecoration(
@@ -1067,9 +1067,9 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                                   : Colors.grey)
                           .paddingAll(12)
                           .onTap(() {
-                        if (totalParcelController.text.toInt() > 1) {
-                          totalParcelController.text =
-                              (totalParcelController.text.toInt() - 1)
+                        if (totalServiceRequestsController.text.toInt() > 1) {
+                          totalServiceRequestsController.text =
+                              (totalServiceRequestsController.text.toInt() - 1)
                                   .toString();
                         }
                       }),
@@ -1078,7 +1078,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                       Container(
                         width: 50,
                         child: AppTextField(
-                          controller: totalParcelController,
+                          controller: totalServiceRequestsController,
                           textAlign: TextAlign.center,
                           maxLength: 2,
                           textFieldType: TextFieldType.PHONE,
@@ -1099,8 +1099,8 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                                   : Colors.grey)
                           .paddingAll(12)
                           .onTap(() {
-                        totalParcelController.text =
-                            (totalParcelController.text.toInt() + 1).toString();
+                        totalServiceRequestsController.text =
+                            (totalServiceRequestsController.text.toInt() + 1).toString();
                       }),
                     ],
                   ),
@@ -1109,10 +1109,10 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
             ],
           ),
           16.height,
-          Text(language.parcelType, style: primaryTextStyle()),
+          Text(language.serviceType, style: primaryTextStyle()),
           8.height,
           AppTextField(
-            controller: parcelTypeCont,
+            controller: serviceTypeCont,
             textFieldType: TextFieldType.OTHER,
             decoration: commonInputDecoration(),
             validator: (value) {
@@ -1124,7 +1124,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           Wrap(
             spacing: 8,
             runSpacing: 0,
-            children: parcelTypeList.map((item) {
+            children: serviceTypeList.map((item) {
               return Chip(
                 backgroundColor: context.scaffoldBackgroundColor,
                 label: Text(item.label!, style: secondaryTextStyle()),
@@ -1139,7 +1139,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                       width: appStore.isDarkMode ? 0.2 : 1),
                 ),
               ).onTap(() {
-                parcelTypeCont.text = item.label!;
+                serviceTypeCont.text = item.label!;
                 setState(() {});
               });
             }).toList(),
@@ -1605,7 +1605,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
               crossAxisAlignment: .start,
               children: [
                 rowWidget(
-                    title: language.parcelType, value: parcelTypeCont.text),
+                    title: language.serviceType, value: serviceTypeCont.text),
                 8.height,
                 rowWidget(
                     title: language.weight,
@@ -1613,8 +1613,8 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                         '${weightController.text} ${CountryModel.fromJson(getJSONAsync(COUNTRY_DATA)).weightType}'),
                 8.height,
                 rowWidget(
-                    title: language.numberOfParcels,
-                    value: '${totalParcelController.text}'),
+                    title: language.numberOfServices,
+                    value: '${totalServiceRequestsController.text}'),
               ],
             ),
           ),
@@ -1772,7 +1772,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           16.height.visible(insuranceSelectedOption == 0),
           if (appStore.isInsuranceAllowed == "1") ...[
             12.height,
-            Text(language.approxParcelValue, style: primaryTextStyle())
+            Text(language.approxServiceValue, style: primaryTextStyle())
                 .visible(insuranceSelectedOption == 0),
             9.height,
             AppTextField(
@@ -2081,7 +2081,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
               ),
               if (value == 0 && insuranceSelectedOption == 0)
                 Text(
-                  "${appStore.insurancePercentage} ${language.ofApproxParcelValue}",
+                  "${appStore.insurancePercentage} ${language.ofApproxServiceValue}",
                   style: secondaryTextStyle(
                     color: Colors.white.withOpacity(0.5),
                     size: 13,

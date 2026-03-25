@@ -50,7 +50,7 @@
 //     ),
 //     items: [
 //       InvoiceItem(
-//         product: '${orderData.parcelType} (${orderData.totalWeight} ${CountryModel.fromJson(getJSONAsync(COUNTRY_DATA)).weightType})',
+//         product: '${orderData.serviceType} (${orderData.totalWeight} ${CountryModel.fromJson(getJSONAsync(COUNTRY_DATA)).weightType})',
 //         description: language.deliveryCharge,
 //         price: orderData.fixedCharges!.toDouble(),
 //       ),

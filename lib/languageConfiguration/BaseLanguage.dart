@@ -235,11 +235,11 @@ class BaseLanguage {
 
   String get weight => getContentValueFromKey(103);
 
-  String get numberOfParcels => getContentValueFromKey(104);
+  String get numberOfServices => getContentValueFromKey(104);
 
   String get selectVehicle => getContentValueFromKey(105);
 
-  String get parcelType => getContentValueFromKey(106);
+  String get serviceType => getContentValueFromKey(106);
 
   String get pickupInformation => getContentValueFromKey(107);
 
@@ -407,7 +407,7 @@ class BaseLanguage {
 
   String get viewHistory => getContentValueFromKey(178);
 
-  String get parcelDetails => getContentValueFromKey(179);
+  String get serviceDetails => getContentValueFromKey(179);
 
   String get paymentDetails => getContentValueFromKey(180);
 
@@ -1013,7 +1013,7 @@ class BaseLanguage {
 
   String get shipped => getContentValueFromKey(504);
 
-  String get approxParcelValue => getContentValueFromKey(505);
+  String get approxServiceValue => getContentValueFromKey(505);
 
   String get reviewRoute => getContentValueFromKey(506);
 
@@ -1096,7 +1096,7 @@ class BaseLanguage {
 
   String get trackinNo => getContentValueFromKey(546);
 
-  String get ofApproxParcelValue => getContentValueFromKey(548);
+  String get ofApproxServiceValue => getContentValueFromKey(548);
 
   String get claimInsurance => getContentValueFromKey(550);
 

@@ -173,7 +173,7 @@ class AddAddressScreenState extends State<AddAddressScreen> {
                               primaryColor: ColorUtils.colorPrimary,
                               title: "Location Access Needed",
                               note:
-                                  "We need your location in order to deliver/pickup your parcel",
+                                  "We need your location in order to deliver/pickup your service",
                               positiveText: "Open Settings",
                               negativeText: language.cancel,
                               onCancel: (p0) => Navigator.pop(context, false),

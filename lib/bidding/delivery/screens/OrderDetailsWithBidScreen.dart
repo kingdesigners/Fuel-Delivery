@@ -539,7 +539,7 @@ class OrderDetailWithBidScreenState extends State<OrderDetailWithBidScreen> {
                                       Column(
                                         crossAxisAlignment: .start,
                                         children: [
-                                          Text(orderData!.parcelType.validate(),
+                                          Text(orderData!.serviceType.validate(),
                                               style: boldTextStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                                           4.height,
                                           Row(
@@ -699,7 +699,7 @@ class OrderDetailWithBidScreenState extends State<OrderDetailWithBidScreen> {
                               ),
                             ),
                             16.height,
-                            Text(language.parcelDetails, style: boldTextStyle(size: 16)),
+                            Text(language.serviceDetails, style: boldTextStyle(size: 16)),
                             12.height,
                             Container(
                               decoration: boxDecorationWithRoundedCorners(
@@ -719,14 +719,14 @@ class OrderDetailWithBidScreenState extends State<OrderDetailWithBidScreen> {
                                             border: Border.all(color: ColorUtils.borderColor, width: appStore.isDarkMode ? 0.2 : 1),
                                             backgroundColor: Colors.transparent),
                                         padding: .all(8),
-                                        child: Image.asset(parcelTypeIcon(orderData!.parcelType.validate()),
+                                        child: Image.asset(serviceTypeIcon(orderData!.serviceType.validate()),
                                             height: 24, width: 24, color: Colors.grey),
                                       ),
                                       8.width,
                                       Column(
                                         crossAxisAlignment: .start,
                                         children: [
-                                          Text(orderData!.parcelType.validate(), style: boldTextStyle()),
+                                          Text(orderData!.serviceType.validate(), style: boldTextStyle()),
                                           4.height,
                                           Text('${orderData!.totalWeight} ${CountryModel.fromJson(getJSONAsync(COUNTRY_DATA)).weightType}',
                                               style: secondaryTextStyle()),
@@ -738,10 +738,10 @@ class OrderDetailWithBidScreenState extends State<OrderDetailWithBidScreen> {
                                   Row(
                                     mainAxisAlignment: .spaceBetween,
                                     children: [
-                                      Text(language.numberOfParcels, style: secondaryTextStyle()),
-                                      Text('${orderData!.totalParcel ?? 1}', style: boldTextStyle(size: 14)),
+                                      Text(language.numberOfServices, style: secondaryTextStyle()),
+                                      Text('${orderData!.totalServiceRequests ?? 1}', style: boldTextStyle(size: 14)),
                                     ],
-                                  ).visible(orderData!.totalParcel != null),
+                                  ).visible(orderData!.totalServiceRequests != null),
                                   8.height,
                                 ],
                               ),

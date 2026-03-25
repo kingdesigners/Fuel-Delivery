@@ -83,13 +83,13 @@ class _OrderCardComponentState extends State<OrderCardComponent> {
                 Container(
                   decoration: boxDecorationWithRoundedCorners(borderRadius: BorderRadius.circular(8), border: Border.all(color: ColorUtils.borderColor, width: appStore.isDarkMode ? 0.2 : 1), backgroundColor: context.cardColor),
                   padding: .all(8),
-                  child: Image.asset(parcelTypeIcon(widget.item.parcelType.validate()), height: 24, width: 24, color: ColorUtils.colorPrimary),
+                  child: Image.asset(serviceTypeIcon(widget.item.serviceType.validate()), height: 24, width: 24, color: ColorUtils.colorPrimary),
                 ),
                 8.width,
                 Column(
                   crossAxisAlignment: .start,
                   children: [
-                    Text(widget.item.parcelType.validate(), style: boldTextStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Text(widget.item.serviceType.validate(), style: boldTextStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                     4.height,
                     Row(
                       children: [

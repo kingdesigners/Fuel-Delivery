@@ -119,7 +119,7 @@ class DraftOrderListScreenState extends State<DraftOrderListScreen> {
                             Column(
                               crossAxisAlignment: .start,
                               children: [
-                                item.parcelType != null
+                                item.serviceType != null
                                     ? Row(
                                         children: [
                                           Container(
@@ -128,7 +128,7 @@ class DraftOrderListScreenState extends State<DraftOrderListScreen> {
                                                 border: Border.all(color: ColorUtils.borderColor, width: appStore.isDarkMode ? 0.2 : 1),
                                                 backgroundColor: context.cardColor),
                                             padding: .all(8),
-                                            child: Image.asset(parcelTypeIcon(item.parcelType.validate()),
+                                            child: Image.asset(serviceTypeIcon(item.serviceType.validate()),
                                                 height: 24, width: 24, color: ColorUtils.colorPrimary),
                                           ),
                                           8.width,
@@ -137,7 +137,7 @@ class DraftOrderListScreenState extends State<DraftOrderListScreen> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  Text(item.parcelType.validate(), style: boldTextStyle()).expand(),
+                                                  Text(item.serviceType.validate(), style: boldTextStyle()).expand(),
                                                   Text('${printAmount(item.totalAmount ?? 0)}', style: primaryTextStyle()),
                                                 ],
                                               ),

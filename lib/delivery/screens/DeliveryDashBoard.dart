@@ -902,13 +902,13 @@ class DeliveryDashBoardState extends State<DeliveryDashBoard> with WidgetsBindin
                       border: Border.all(color: ColorUtils.borderColor, width: appStore.isDarkMode ? 0.2 : 1),
                       backgroundColor: context.cardColor),
                   padding: .all(8),
-                  child: Image.asset(parcelTypeIcon(data.parcelType.validate()), height: 24, width: 24, color: Colors.grey),
+                  child: Image.asset(serviceTypeIcon(data.serviceType.validate()), height: 24, width: 24, color: Colors.grey),
                 ),
                 8.width,
                 Column(
                   crossAxisAlignment: .start,
                   children: [
-                    Text(data.parcelType.validate(), style: boldTextStyle()),
+                    Text(data.serviceType.validate(), style: boldTextStyle()),
                     4.height,
                     Row(
                       children: [
