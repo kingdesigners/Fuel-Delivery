@@ -39,7 +39,6 @@ import '../../main.dart';
 import '../../main/components/CommonScaffoldComponent.dart';
 import '../../main/components/OrderAmountSummaryWidget.dart';
 import '../../main/components/PickAddressBottomSheet.dart';
-import '../../main/components/PickAddressBottomSheet.dart';
 import '../../main/models/CountryListModel.dart';
 import '../../main/models/CreateOrderDetailModel.dart';
 import '../../main/models/ExtraChargeRequestModel.dart';
@@ -254,6 +253,21 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
     try {
       var res = await getAvailableRiders(cityData?.id.toString());
       availableRiders = res.data ?? [];
+
+      // If delivery location is selected, sort riders by distance
+      if (deliverLat != null && deliverLong != null && availableRiders.isNotEmpty) {
+        double dLat = double.parse(deliverLat!);
+        double dLong = double.parse(deliverLong!);
+        for (var rider in availableRiders) {
+          if (rider.latitude != null && rider.longitude != null) {
+            double distInMeters = Geolocator.distanceBetween(dLat, dLong, rider.latitude!, rider.longitude!);
+            rider.distance = double.parse((distInMeters / 1000).toStringAsFixed(2)); // km
+          } else {
+            rider.distance = 9999.0; // fallback if no location
+          }
+        }
+        availableRiders.sort((a, b) => (a.distance ?? 9999).compareTo(b.distance ?? 9999));
+      }
     } catch (e) {
       log(e);
     }
@@ -277,7 +291,6 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       await getStaticDetailsForOrder();
       getAddressData = await getAddressList(page: 1);
       await getCouponList();
-      await fetchRiders();
       if (widget.orderData != null) {
         if (widget.orderData!.totalWeight != 0)
           weightController.text = widget.orderData!.totalWeight!.toString();
@@ -1495,6 +1508,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                             } else {
                               deliverPhoneCont.text = phone;
                             }
+                            fetchRiders(); // Fetch nearby riders now that destination is known
                             setState(() {});
                           },
                         );
@@ -1549,6 +1563,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                             } else {
                               deliverPhoneCont.text = phone;
                             }
+                            fetchRiders(); // Fetch nearby riders now that destination is known
                             setState(() {});
                           },
                         );
@@ -2209,6 +2224,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           deliverAddressCont.text = res.placeAddress ?? "";
           deliverLat = res.latitude.toString();
           deliverLong = res.longitude.toString();
+          fetchRiders(); // Fetch nearby riders now that destination is known
         }
         setState(() {});
       }
@@ -2478,8 +2494,8 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                   crossAxisAlignment: .start,
                   children: [
                     if (selectedTabIndex == 0) createOrderWidget1(),
-                    if (selectedTabIndex == 1) createOrderWidget2(),
-                    if (selectedTabIndex == 2) createOrderWidget3(),
+                    if (selectedTabIndex == 1) createOrderWidget3(),
+                    if (selectedTabIndex == 2) createOrderWidget2(),
                     if (selectedTabIndex == 3) createOrderWidget4(),
                     if (selectedTabIndex == 4) createOrderWidget5(),
                   ],
