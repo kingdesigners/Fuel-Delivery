@@ -13,24 +13,24 @@ final DOMAIN_URL = AppServerConfig.baseUrl;
 
 //region Google map key
 // Reads from GOOGLE_MAP_API_KEY in your .env file
-final googleMapAPIKey = dotenv.env['GOOGLE_MAP_API_KEY'] ?? '';
+String get googleMapAPIKey => dotenv.env['GOOGLE_MAP_API_KEY'] ?? '';
 //endregion
 
 // region onesignal keys
 // Reads from ONESIGNAL_APP_ID and ONESIGNAL_REST_API_KEY in your .env file
-final mOneSignalAppId = dotenv.env['ONESIGNAL_APP_ID'] ?? '';
-final mOneSignalRestKey = dotenv.env['ONESIGNAL_REST_API_KEY'] ?? '';
+String get mOneSignalAppId => dotenv.env['ONESIGNAL_APP_ID'] ?? '';
+String get mOneSignalRestKey => dotenv.env['ONESIGNAL_REST_API_KEY'] ?? '';
 const mOneSignalChannelId = 'ONESIGNAL_CHANNEL_ID';
 //endregion
 
 //region firebase data
 // These usually come from your firebase_options.dart,
 // but you can point them to .env if you prefer
-const String FIREBASE_API_KEY = "AIzaSyCgYTBfwl1mQ4M_1h1lD2RPe3EeE-sXlkE";
-const String FIREBASE_APP_ID = "1:487693761017:android:823808565807703766e528";
-const String FIREBASE_MESSAGING_SENDER_ID = "487693761017";
-const String FIREBASE_PROJECT_ID = "ibk-delivery";
-const String FIREBASE_STORAGE_BUCKET = "ibk-delivery.firebasestorage.app";
+String get FIREBASE_API_KEY => dotenv.env['FIREBASE_API_KEY'] ?? "";
+const String FIREBASE_APP_ID = "1:463292593569:android:b44c16723afe44844647e0";
+const String FIREBASE_MESSAGING_SENDER_ID = "463292593569";
+const String FIREBASE_PROJECT_ID = "ibk-humergy-official";
+const String FIREBASE_STORAGE_BUCKET = "ibk-humergy-official.firebasestorage.app";
 //endregion
 
 // ... Rest of your file stays the same ...
@@ -40,7 +40,7 @@ const String FIREBASE_APP_ID_IOS = "FIREBASE_APP_ID_IOS";
 //for ios
 const String ANDROID_CLIENT_ID = 'ANDROID_CLIENT_ID';
 const String IOS_CLIENT_ID = 'IOS_CLIENT_ID';
-const String IOS_BUNDLE_ID = 'com.mighty.delivery';
+const String IOS_BUNDLE_ID = 'com.ibk.delivery';
 //endregion
 
 //region languages and phone code

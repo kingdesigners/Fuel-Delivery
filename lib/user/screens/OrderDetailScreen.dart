@@ -726,7 +726,7 @@ class OrderDetailScreenState extends State<OrderDetailScreen> {
                                       Container(
                                         decoration: boxDecorationWithRoundedCorners(borderRadius: BorderRadius.circular(8), border: Border.all(color: ColorUtils.borderColor, width: appStore.isDarkMode ? 0.2 : 1), backgroundColor: Colors.transparent),
                                         padding: .all(8),
-                                        child: Image.asset(serviceTypeIcon(orderData!.serviceType.validate()), height: 24, width: 24, color: Colors.grey),
+                                        child: Icon(Icons.local_gas_station, size: 24, color: Colors.grey),
                                       ),
                                       8.width,
                                       Column(

@@ -329,14 +329,21 @@ class AuthServices {
         if (value.data!.contactNumber.isEmptyOrNull) {
           EditProfileScreen(isGoogle: true).launch(getContext, isNewTask: true);
         } else {
-          if (value.data!.countryId != null && value.data!.cityId != null) {
-            await getCountryDetailApiCall(value.data!.countryId.validate());
-            getCityDetailApiCall(value.data!.cityId.validate());
+          if (value.data!.status == 1) {
+            if (value.data!.countryId != null && value.data!.cityId != null) {
+              await getCountryDetailApiCall(value.data!.countryId.validate());
+              getCityDetailApiCall(value.data!.cityId.validate());
+            } else {
+              UserCitySelectScreen().launch(getContext, isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            }
+            if (value.data!.uid.isEmptyOrNull) await updateUid(getStringAsync(UID)).catchError((error) {});
+            if (value.data!.playerId.isEmptyOrNull) await updatePlayerId().catchError((error) {});
           } else {
-            UserCitySelectScreen().launch(getContext, isNewTask: true, pageRouteAnimation: PageRouteAnimation.Slide);
+            appStore.setLoading(false);
+            toast(language.userNotApproveMsg);
+            await logout(getContext);
+            return; // stop execution here
           }
-          if (value.data!.uid.isEmptyOrNull) await updateUid(getStringAsync(UID)).catchError((error) {});
-          if (value.data!.playerId.isEmptyOrNull) await updatePlayerId().catchError((error) {});
         }
         updateStoreCheckerData().then((source) async {
           await getUserDetail(getIntAsync(USER_ID)).then((value) async {

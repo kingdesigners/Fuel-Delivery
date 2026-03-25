@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
 set(BINARY_NAME "mighty_local_delivery")
-set(APPLICATION_ID "com.mighty.delivery.mighty_local_delivery")
+set(APPLICATION_ID "com.ibk.delivery.mighty_local_delivery")
 
 cmake_policy(SET CMP0063 NEW)
 

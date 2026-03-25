@@ -8,6 +8,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../extensions/extension_util/string_extensions.dart';
 import '../../main/services/OrdersMessageService.dart';
@@ -53,6 +54,7 @@ ValueNotifier<bool> isSosVisible = ValueNotifier(false);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 
   try {
     if (Platform.isIOS) {
@@ -69,7 +71,7 @@ void main() async {
       rethrow;
     }
   }
-  
+
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   // await initialize(aLocaleLanguageList: languageList());
@@ -93,8 +95,6 @@ void main() async {
   } catch (e) {
     print("error========${e.toString()}");
   }
-// Add this line before runApp
-  await dotenv.load(fileName: ".env");
 
     runApp(MyApp());
 }

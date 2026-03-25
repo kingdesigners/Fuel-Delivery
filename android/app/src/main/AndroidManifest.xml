@@ -18,10 +18,10 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCsTWLdlaBYGFi0Pro6jQxJL7FChfujcJM" />
+            android:value="${GOOGLE_MAP_API_KEY}" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.ibk.delivery.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"

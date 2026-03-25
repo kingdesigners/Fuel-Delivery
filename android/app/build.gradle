@@ -12,7 +12,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.mighty.delivery"
+    namespace = "com.ibk.delivery"
 
     signingConfigs {
         release {
@@ -38,13 +38,32 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mighty.delivery"
+        applicationId "com.ibk.delivery"
         minSdkVersion 28
         targetSdkVersion 35
         versionCode 72
         versionName '8.1.0'
         multiDexEnabled true
 
+        def localProperties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.withReader('UTF-8') { reader ->
+                localProperties.load(reader)
+            }
+        }
+
+        def envProperties = new Properties()
+        def envPropertiesFile = rootProject.file('../.env')
+        if (envPropertiesFile.exists()) {
+            envPropertiesFile.withReader('UTF-8') { reader ->
+                envProperties.load(reader)
+            }
+        }
+
+        manifestPlaceholders += [
+            GOOGLE_MAP_API_KEY: envProperties.getProperty("GOOGLE_MAP_API_KEY", localProperties.getProperty("GOOGLE_MAP_API_KEY", ""))
+        ]
     }
 
     buildTypes {
