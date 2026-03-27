@@ -70,11 +70,11 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   CityDetail? cityData;
-  List<StaticDetails> parcelTypeList = [];
+  List<ServiceData> serviceList = [];
 
-  TextEditingController parcelTypeCont = TextEditingController();
+  TextEditingController serviceTypeCont = TextEditingController();
   TextEditingController weightController = TextEditingController(text: '1');
-  TextEditingController totalParcelController =
+  TextEditingController totalServiceController =
       TextEditingController(text: '1');
 
   TextEditingController pickAddressCont = TextEditingController();
@@ -203,8 +203,17 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
 
       if (value.vehicleDetail!.isNotEmpty)
         selectedVehicle = value.vehicleDetail![0].id;
-      parcelTypeList.clear();
-      parcelTypeList.addAll(value.staticDetails!);
+      serviceList.clear();
+
+      try {
+        var serviceResponse = await getServiceList();
+        if (serviceResponse.data != null) {
+          serviceList.addAll(serviceResponse.data!);
+        }
+      } catch (e) {
+        print("Failed to fetch services: $e");
+      }
+
       appStore.setCurrencyCode(
           value.appSettingDetail!.currencyCode ?? CURRENCY_CODE);
       appStore.setCurrencySymbol(
@@ -261,7 +270,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
         for (var rider in availableRiders) {
           if (rider.latitude != null && rider.longitude != null) {
             double distInMeters = Geolocator.distanceBetween(dLat, dLong, rider.latitude!, rider.longitude!);
-            rider.distance = double.parse((distInMeters / 1000).toStringAsFixed(2)); // km
+            rider.distance = double.parse((distInMeters / 1609.34).toStringAsFixed(2)); // mi
           } else {
             rider.distance = 9999.0; // fallback if no location
           }
@@ -295,9 +304,9 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
         if (widget.orderData!.totalWeight != 0)
           weightController.text = widget.orderData!.totalWeight!.toString();
         if (widget.orderData!.totalParcel != null)
-          totalParcelController.text =
+          totalServiceController.text =
               widget.orderData!.totalParcel!.toString();
-        parcelTypeCont.text = widget.orderData!.parcelType.validate();
+        serviceTypeCont.text = widget.orderData!.parcelType.validate();
 
         pickAddressCont.text =
             widget.orderData!.pickupPoint!.address.validate();
@@ -412,6 +421,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       appStore.setLoading(false);
       print("------------request${request.toString()}");
       totalAmountResponse = value;
+
       print("---------------${totalAmountResponse!.baseTotal}");
       if (value.vehicleAmount != null) {
         vehicleCharge = value.vehicleAmount!;
@@ -509,7 +519,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       },
       "packaging_symbols": packaging_symbols,
       "extra_charges": extraChargeList,
-      "parcel_type": parcelTypeCont.text,
+      "service_type": serviceTypeCont.text,
       "total_weight": weightController.text.toDouble(),
       "total_distance":
           totalDistance.toStringAsFixed(digitAfterDecimal).validate(),
@@ -525,7 +535,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       "total_amount": calculateTotalAmount(),
       "weight_charge": totalAmountResponse!.weightAmount!.toDouble(),
       "distance_charge": totalAmountResponse!.distanceAmount!.toDouble(),
-      "total_parcel": totalParcelController.text.toInt(),
+      "total_service_requests": totalServiceController.text.toInt(),
       "insurance_charge": insuranceAmount,
       if (selectedCoupon?.couponCode != null && isAppliedCoupon == true)
         "discount_amount":
@@ -1106,9 +1116,9 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                                   : Colors.grey)
                           .paddingAll(12)
                           .onTap(() {
-                        if (totalParcelController.text.toInt() > 1) {
-                          totalParcelController.text =
-                              (totalParcelController.text.toInt() - 1)
+                        if (totalServiceController.text.toInt() > 1) {
+                          totalServiceController.text =
+                              (totalServiceController.text.toInt() - 1)
                                   .toString();
                         }
                       }),
@@ -1117,7 +1127,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                       Container(
                         width: 50,
                         child: AppTextField(
-                          controller: totalParcelController,
+                          controller: totalServiceController,
                           textAlign: TextAlign.center,
                           maxLength: 2,
                           textFieldType: TextFieldType.PHONE,
@@ -1138,8 +1148,8 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                                   : Colors.grey)
                           .paddingAll(12)
                           .onTap(() {
-                        totalParcelController.text =
-                            (totalParcelController.text.toInt() + 1).toString();
+                        totalServiceController.text =
+                            (totalServiceController.text.toInt() + 1).toString();
                       }),
                     ],
                   ),
@@ -1151,7 +1161,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           Text(language.parcelType, style: primaryTextStyle()),
           8.height,
           AppTextField(
-            controller: parcelTypeCont,
+            controller: serviceTypeCont,
             textFieldType: TextFieldType.OTHER,
             decoration: commonInputDecoration(),
             validator: (value) {
@@ -1169,13 +1179,13 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
               mainAxisSpacing: 12,
               childAspectRatio: 0.85,
             ),
-            itemCount: parcelTypeList.length,
+            itemCount: serviceList.length,
             itemBuilder: (context, index) {
-              final item = parcelTypeList[index];
-              bool isSelected = parcelTypeCont.text == item.label;
+              final item = serviceList[index];
+              bool isSelected = serviceTypeCont.text == item.label;
               return GestureDetector(
                 onTap: () {
-                  parcelTypeCont.text = item.label!;
+                  serviceTypeCont.text = item.label!;
                   setState(() {});
                 },
                 child: Container(
@@ -1734,7 +1744,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                                     ),
                                     4.height,
                                     Text(rider.name ?? '', style: primaryTextStyle(size: 14), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                    Text('${rider.distance ?? 0} km away', style: secondaryTextStyle(size: 10)),
+                                    Text('${rider.distance ?? 0} mi away', style: secondaryTextStyle(size: 10)),
                                   ],
                                 ),
                               ),
@@ -1795,7 +1805,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
               crossAxisAlignment: .start,
               children: [
                 rowWidget(
-                    title: language.parcelType, value: parcelTypeCont.text),
+                    title: language.parcelType, value: serviceTypeCont.text),
                 8.height,
                 rowWidget(
                     title: language.weight,
@@ -1804,7 +1814,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                 8.height,
                 rowWidget(
                     title: language.numberOfParcels,
-                    value: '${totalParcelController.text}'),
+                    value: '${totalServiceController.text}'),
               ],
             ),
           ),
@@ -2116,6 +2126,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           16.height,
           if (totalAmountResponse != null)
             OrderAmountDataWidget(
+                selectedServiceId: serviceList.firstWhere((e) => e.label == serviceTypeCont.text, orElse: () => ServiceData()).id?.toString(),
                 fixedAmount: totalAmountResponse!.fixedAmount!.toDouble(),
                 distanceAmount: totalAmountResponse!.distanceAmount!.toDouble(),
                 extraCharges: totalAmountResponse!.extraCharges!,

@@ -323,7 +323,7 @@ const CURRENCY_POSITION_RIGHT = 'right';
 const CREDIT = 'credit';
 
 const mStripeIdentifier = 'PK';
-const DISTANCE_UNIT_KM = 'km';
+const DISTANCE_UNIT_KM = 'mi';
 const DISTANCE_UNIT_MILE = 'mile';
 const double MILES_PER_KM = 0.621371;
 const String CITY_NOT_FOUND_EXCEPTION = "City has been not found.";

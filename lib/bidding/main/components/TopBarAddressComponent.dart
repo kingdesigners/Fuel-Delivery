@@ -65,7 +65,7 @@ class TopBarAddressComponent extends StatelessWidget {
                       style: boldTextStyle(size: 16, color: ColorUtils.colorPrimary),
                     ),
                     TextSpan(
-                      text: "${orderData!.totalDistance} km",
+                      text: "${orderData!.totalDistance} mi",
                       style: boldTextStyle(),
                     ),
                   ],

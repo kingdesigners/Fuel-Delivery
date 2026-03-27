@@ -1,3 +1,4 @@
+import "../../main/models/ServiceModel.dart";
 import 'dart:convert';
 import 'dart:io';
 
@@ -117,6 +118,8 @@ Future<LoginResponse> logInApi(Map request, {bool isSocialLogin = false}) async 
     await setValue(EMAIL_VERIFIED, loginResponse.data!.emailVerifiedAt != null);
 
     appStore.setUserProfile(loginResponse.data!.profileImage.validate());
+    appStore.setPlanType(loginResponse.data!.planType);
+    appStore.setFuelBalance(loginResponse.data!.fuelBalance);
     await userService.getUser(email: loginResponse.data!.email.validate()).then((value) async {
       log(value.toString());
       //  await setValue(UID, value.uid.validate());
@@ -184,6 +187,8 @@ Future<void> logout(BuildContext context, {bool isFromLogin = false, bool isDele
     await appStore.setLogin(false);
     appStore.setFiltering(false);
     appStore.setUserProfile('');
+    appStore.setPlanType(null);
+    appStore.setFuelBalance(null);
     appStore.setIsCrispChatEnabled(false);
     appStore.setCrispChatWebsiteId('');
     if (isFromLogin) {
@@ -756,4 +761,9 @@ Future<RiderListModel> getAvailableRiders(String? cityId) async {
     endpoint += '&city_id=$cityId';
   }
   return RiderListModel.fromJson(await handleResponse(await buildHttpResponse(endpoint, method: HttpMethod.GET)));
+}
+
+/// Services Api
+Future<ServiceListModel> getServiceList() async {
+  return ServiceListModel.fromJson(await handleResponse(await buildHttpResponse('services', method: HttpMethod.GET)));
 }

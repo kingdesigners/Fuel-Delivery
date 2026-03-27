@@ -713,6 +713,8 @@ class BaseLanguage {
 
   String get price => getContentValueFromKey(300);
 
+  String get pricePerGallon => getContentValueFromKey(641);
+
   String get subTotal => getContentValueFromKey(301);
 
   String get paid => getContentValueFromKey(316);
