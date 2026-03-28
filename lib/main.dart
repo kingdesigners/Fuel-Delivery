@@ -81,6 +81,8 @@ void main() async {
     appStore.setLogin(getBoolAsync(IS_LOGGED_IN), isInitializing: true);
     appStore.setUserEmail(getStringAsync(USER_EMAIL), isInitialization: true);
     appStore.setUserProfile(getStringAsync(USER_PROFILE_PHOTO), isInitializing: true);
+    appStore.setPlanType(getStringAsync('PLAN_TYPE'), isInitializing: true);
+    appStore.setFuelBalance(getDoubleAsync('FUEL_BALANCE'), isInitializing: true);
     FilterAttributeModel? filterData = FilterAttributeModel.fromJson(getJSONAsync(FILTER_DATA));
     appStore.setFiltering(filterData.orderStatus != null || !filterData.fromDate.isEmptyOrNull || !filterData.toDate.isEmptyOrNull);
     print("===========setLanguage${appStore.selectedLanguage}");

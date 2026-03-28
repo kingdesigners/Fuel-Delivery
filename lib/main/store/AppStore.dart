@@ -41,6 +41,12 @@ abstract class _AppStore with Store {
   bool isFiltering = false;
 
   @observable
+  String? planType;
+
+  @observable
+  double? fuelBalance;
+
+  @observable
   String uid = '';
 
   @observable
@@ -198,6 +204,30 @@ abstract class _AppStore with Store {
   @action
   Future<void> setFiltering(bool val) async {
     isFiltering = val;
+  }
+
+  @action
+  Future<void> setPlanType(String? val, {bool isInitializing = false}) async {
+    planType = val;
+    if (!isInitializing) {
+      if (val != null) {
+        await setValue('PLAN_TYPE', val);
+      } else {
+        await removeKey('PLAN_TYPE');
+      }
+    }
+  }
+
+  @action
+  Future<void> setFuelBalance(double? val, {bool isInitializing = false}) async {
+    fuelBalance = val;
+    if (!isInitializing) {
+      if (val != null) {
+        await setValue('FUEL_BALANCE', val);
+      } else {
+        await removeKey('FUEL_BALANCE');
+      }
+    }
   }
 
   @action

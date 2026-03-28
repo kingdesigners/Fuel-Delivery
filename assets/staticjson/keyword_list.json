@@ -859,7 +859,7 @@
                 "screenId": "19",
                 "keyword_id": 103,
                 "keyword_name": "liters",
-                "keyword_value": "Liters"
+                "keyword_value": "Gallons"
             },
             {
                 "screenId": "19",
@@ -1243,7 +1243,7 @@
                 "screenId": "19",
                 "keyword_id": 559,
                 "keyword_name": "perKmCharge:",
-                "keyword_value": "Per km charge:"
+                "keyword_value": "Per mi charge:"
             },
             {
                 "screenId": "19",
@@ -4232,6 +4232,12 @@
                 "keyword_id": 640,
                 "keyword_name": "resolveEmergency",
                 "keyword_value": "Resolve Emergency"
+            },
+            {
+                "screenId": "64",
+                "keyword_id": 641,
+                "keyword_name": "pricePerGallon",
+                "keyword_value": "Price per Gallon"
             }
         ]
     }

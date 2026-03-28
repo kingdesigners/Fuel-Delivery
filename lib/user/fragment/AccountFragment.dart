@@ -129,7 +129,22 @@ class AccountFragmentState extends State<AccountFragment> {
                       Column(
                         crossAxisAlignment: .start,
                         children: [
-                          Text(getStringAsync(NAME).validate(), style: boldTextStyle(size: 20)),
+                          Row(
+                            children: [
+                              Text(getStringAsync(NAME).validate(), style: boldTextStyle(size: 20)),
+                              if (appStore.planType != null && appStore.planType!.isNotEmpty) ...[
+                                8.width,
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFFFD700), // Humergy yellow
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text('Member', style: boldTextStyle(size: 12, color: Colors.black)),
+                                ),
+                              ]
+                            ],
+                          ),
                           6.height,
                           Text(appStore.userEmail.validate(), style: secondaryTextStyle(size: 16)),
                         ],

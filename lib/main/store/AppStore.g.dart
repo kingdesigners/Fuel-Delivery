@@ -9,7 +9,10 @@ part of 'AppStore.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AppStore on _AppStore, Store {
-  late final _$isLoadingAtom = Atom(name: '_AppStore.isLoading', context: context);
+  late final _$isLoadingAtom = Atom(
+    name: '_AppStore.isLoading',
+    context: context,
+  );
 
   @override
   bool get isLoading {
@@ -24,7 +27,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isLoggedInAtom = Atom(name: '_AppStore.isLoggedIn', context: context);
+  late final _$isLoggedInAtom = Atom(
+    name: '_AppStore.isLoggedIn',
+    context: context,
+  );
 
   @override
   bool get isLoggedIn {
@@ -39,7 +45,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$userEmailAtom = Atom(name: '_AppStore.userEmail', context: context);
+  late final _$userEmailAtom = Atom(
+    name: '_AppStore.userEmail',
+    context: context,
+  );
 
   @override
   String get userEmail {
@@ -54,7 +63,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$allUnreadCountAtom = Atom(name: '_AppStore.allUnreadCount', context: context);
+  late final _$allUnreadCountAtom = Atom(
+    name: '_AppStore.allUnreadCount',
+    context: context,
+  );
 
   @override
   int get allUnreadCount {
@@ -69,7 +81,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$selectedLanguageAtom = Atom(name: '_AppStore.selectedLanguage', context: context);
+  late final _$selectedLanguageAtom = Atom(
+    name: '_AppStore.selectedLanguage',
+    context: context,
+  );
 
   @override
   String get selectedLanguage {
@@ -84,7 +99,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isDarkModeAtom = Atom(name: '_AppStore.isDarkMode', context: context);
+  late final _$isDarkModeAtom = Atom(
+    name: '_AppStore.isDarkMode',
+    context: context,
+  );
 
   @override
   bool get isDarkMode {
@@ -99,7 +117,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isFilteringAtom = Atom(name: '_AppStore.isFiltering', context: context);
+  late final _$isFilteringAtom = Atom(
+    name: '_AppStore.isFiltering',
+    context: context,
+  );
 
   @override
   bool get isFiltering {
@@ -111,6 +132,42 @@ mixin _$AppStore on _AppStore, Store {
   set isFiltering(bool value) {
     _$isFilteringAtom.reportWrite(value, super.isFiltering, () {
       super.isFiltering = value;
+    });
+  }
+
+  late final _$planTypeAtom = Atom(
+    name: '_AppStore.planType',
+    context: context,
+  );
+
+  @override
+  String? get planType {
+    _$planTypeAtom.reportRead();
+    return super.planType;
+  }
+
+  @override
+  set planType(String? value) {
+    _$planTypeAtom.reportWrite(value, super.planType, () {
+      super.planType = value;
+    });
+  }
+
+  late final _$fuelBalanceAtom = Atom(
+    name: '_AppStore.fuelBalance',
+    context: context,
+  );
+
+  @override
+  double? get fuelBalance {
+    _$fuelBalanceAtom.reportRead();
+    return super.fuelBalance;
+  }
+
+  @override
+  set fuelBalance(double? value) {
+    _$fuelBalanceAtom.reportWrite(value, super.fuelBalance, () {
+      super.fuelBalance = value;
     });
   }
 
@@ -129,7 +186,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isOtpVerifyOnPickupDeliveryAtom = Atom(name: '_AppStore.isOtpVerifyOnPickupDelivery', context: context);
+  late final _$isOtpVerifyOnPickupDeliveryAtom = Atom(
+    name: '_AppStore.isOtpVerifyOnPickupDelivery',
+    context: context,
+  );
 
   @override
   bool get isOtpVerifyOnPickupDelivery {
@@ -139,12 +199,19 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   set isOtpVerifyOnPickupDelivery(bool value) {
-    _$isOtpVerifyOnPickupDeliveryAtom.reportWrite(value, super.isOtpVerifyOnPickupDelivery, () {
-      super.isOtpVerifyOnPickupDelivery = value;
-    });
+    _$isOtpVerifyOnPickupDeliveryAtom.reportWrite(
+      value,
+      super.isOtpVerifyOnPickupDelivery,
+      () {
+        super.isOtpVerifyOnPickupDelivery = value;
+      },
+    );
   }
 
-  late final _$currencyCodeAtom = Atom(name: '_AppStore.currencyCode', context: context);
+  late final _$currencyCodeAtom = Atom(
+    name: '_AppStore.currencyCode',
+    context: context,
+  );
 
   @override
   String get currencyCode {
@@ -159,7 +226,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$currencySymbolAtom = Atom(name: '_AppStore.currencySymbol', context: context);
+  late final _$currencySymbolAtom = Atom(
+    name: '_AppStore.currencySymbol',
+    context: context,
+  );
 
   @override
   String get currencySymbol {
@@ -174,7 +244,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$availableBalAtom = Atom(name: '_AppStore.availableBal', context: context);
+  late final _$availableBalAtom = Atom(
+    name: '_AppStore.availableBal',
+    context: context,
+  );
 
   @override
   num get availableBal {
@@ -189,7 +262,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isVehicleOrderAtom = Atom(name: '_AppStore.isVehicleOrder', context: context);
+  late final _$isVehicleOrderAtom = Atom(
+    name: '_AppStore.isVehicleOrder',
+    context: context,
+  );
 
   @override
   int get isVehicleOrder {
@@ -204,7 +280,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$userProfileAtom = Atom(name: '_AppStore.userProfile', context: context);
+  late final _$userProfileAtom = Atom(
+    name: '_AppStore.userProfile',
+    context: context,
+  );
 
   @override
   String get userProfile {
@@ -219,7 +298,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$currencyPositionAtom = Atom(name: '_AppStore.currencyPosition', context: context);
+  late final _$currencyPositionAtom = Atom(
+    name: '_AppStore.currencyPosition',
+    context: context,
+  );
 
   @override
   String get currencyPosition {
@@ -234,7 +316,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$invoiceCompanyNameAtom = Atom(name: '_AppStore.invoiceCompanyName', context: context);
+  late final _$invoiceCompanyNameAtom = Atom(
+    name: '_AppStore.invoiceCompanyName',
+    context: context,
+  );
 
   @override
   String get invoiceCompanyName {
@@ -249,7 +334,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$invoiceContactNumberAtom = Atom(name: '_AppStore.invoiceContactNumber', context: context);
+  late final _$invoiceContactNumberAtom = Atom(
+    name: '_AppStore.invoiceContactNumber',
+    context: context,
+  );
 
   @override
   String get invoiceContactNumber {
@@ -259,12 +347,19 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   set invoiceContactNumber(String value) {
-    _$invoiceContactNumberAtom.reportWrite(value, super.invoiceContactNumber, () {
-      super.invoiceContactNumber = value;
-    });
+    _$invoiceContactNumberAtom.reportWrite(
+      value,
+      super.invoiceContactNumber,
+      () {
+        super.invoiceContactNumber = value;
+      },
+    );
   }
 
-  late final _$invoiceAddressAtom = Atom(name: '_AppStore.invoiceAddress', context: context);
+  late final _$invoiceAddressAtom = Atom(
+    name: '_AppStore.invoiceAddress',
+    context: context,
+  );
 
   @override
   String get invoiceAddress {
@@ -279,7 +374,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$invoiceCompanyLogoAtom = Atom(name: '_AppStore.invoiceCompanyLogo', context: context);
+  late final _$invoiceCompanyLogoAtom = Atom(
+    name: '_AppStore.invoiceCompanyLogo',
+    context: context,
+  );
 
   @override
   String get invoiceCompanyLogo {
@@ -294,7 +392,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$distanceUnitAtom = Atom(name: '_AppStore.distanceUnit', context: context);
+  late final _$distanceUnitAtom = Atom(
+    name: '_AppStore.distanceUnit',
+    context: context,
+  );
 
   @override
   String get distanceUnit {
@@ -309,7 +410,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$userTypeAtom = Atom(name: '_AppStore.userType', context: context);
+  late final _$userTypeAtom = Atom(
+    name: '_AppStore.userType',
+    context: context,
+  );
 
   @override
   String get userType {
@@ -324,7 +428,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$copyRightAtom = Atom(name: '_AppStore.copyRight', context: context);
+  late final _$copyRightAtom = Atom(
+    name: '_AppStore.copyRight',
+    context: context,
+  );
 
   @override
   String get copyRight {
@@ -339,7 +446,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$siteEmailAtom = Atom(name: '_AppStore.siteEmail', context: context);
+  late final _$siteEmailAtom = Atom(
+    name: '_AppStore.siteEmail',
+    context: context,
+  );
 
   @override
   String get siteEmail {
@@ -354,7 +464,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isAllowDeliveryManAtom = Atom(name: '_AppStore.isAllowDeliveryMan', context: context);
+  late final _$isAllowDeliveryManAtom = Atom(
+    name: '_AppStore.isAllowDeliveryMan',
+    context: context,
+  );
 
   @override
   bool get isAllowDeliveryMan {
@@ -369,7 +482,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$referralCodeAtom = Atom(name: '_AppStore.referralCode', context: context);
+  late final _$referralCodeAtom = Atom(
+    name: '_AppStore.referralCode',
+    context: context,
+  );
 
   @override
   String get referralCode {
@@ -384,7 +500,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$maxAmountEarningAtom = Atom(name: '_AppStore.maxAmountEarning', context: context);
+  late final _$maxAmountEarningAtom = Atom(
+    name: '_AppStore.maxAmountEarning',
+    context: context,
+  );
 
   @override
   String get maxAmountEarning {
@@ -399,7 +518,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$themeColorAtom = Atom(name: '_AppStore.themeColor', context: context);
+  late final _$themeColorAtom = Atom(
+    name: '_AppStore.themeColor',
+    context: context,
+  );
 
   @override
   String get themeColor {
@@ -414,7 +536,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isInsuranceAllowedAtom = Atom(name: '_AppStore.isInsuranceAllowed', context: context);
+  late final _$isInsuranceAllowedAtom = Atom(
+    name: '_AppStore.isInsuranceAllowed',
+    context: context,
+  );
 
   @override
   String get isInsuranceAllowed {
@@ -429,7 +554,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$insurancePercentageAtom = Atom(name: '_AppStore.insurancePercentage', context: context);
+  late final _$insurancePercentageAtom = Atom(
+    name: '_AppStore.insurancePercentage',
+    context: context,
+  );
 
   @override
   String get insurancePercentage {
@@ -444,7 +572,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$insuranceDescriptionAtom = Atom(name: '_AppStore.insuranceDescription', context: context);
+  late final _$insuranceDescriptionAtom = Atom(
+    name: '_AppStore.insuranceDescription',
+    context: context,
+  );
 
   @override
   String get insuranceDescription {
@@ -454,12 +585,19 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   set insuranceDescription(String value) {
-    _$insuranceDescriptionAtom.reportWrite(value, super.insuranceDescription, () {
-      super.insuranceDescription = value;
-    });
+    _$insuranceDescriptionAtom.reportWrite(
+      value,
+      super.insuranceDescription,
+      () {
+        super.insuranceDescription = value;
+      },
+    );
   }
 
-  late final _$claimDurationAtom = Atom(name: '_AppStore.claimDuration', context: context);
+  late final _$claimDurationAtom = Atom(
+    name: '_AppStore.claimDuration',
+    context: context,
+  );
 
   @override
   String get claimDuration {
@@ -474,7 +612,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$crispChatWebsiteIdAtom = Atom(name: '_AppStore.crispChatWebsiteId', context: context);
+  late final _$crispChatWebsiteIdAtom = Atom(
+    name: '_AppStore.crispChatWebsiteId',
+    context: context,
+  );
 
   @override
   String get crispChatWebsiteId {
@@ -489,7 +630,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isCrispChatEnabledAtom = Atom(name: '_AppStore.isCrispChatEnabled', context: context);
+  late final _$isCrispChatEnabledAtom = Atom(
+    name: '_AppStore.isCrispChatEnabled',
+    context: context,
+  );
 
   @override
   bool get isCrispChatEnabled {
@@ -504,7 +648,46 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$isBiddingEnabledAtom = Atom(name: '_AppStore.isBiddingEnabled', context: context);
+  late final _$isSmsOrderAtom = Atom(
+    name: '_AppStore.isSmsOrder',
+    context: context,
+  );
+
+  @override
+  int get isSmsOrder {
+    _$isSmsOrderAtom.reportRead();
+    return super.isSmsOrder;
+  }
+
+  @override
+  set isSmsOrder(int value) {
+    _$isSmsOrderAtom.reportWrite(value, super.isSmsOrder, () {
+      super.isSmsOrder = value;
+    });
+  }
+
+  late final _$avgRatingAtom = Atom(
+    name: '_AppStore.avgRating',
+    context: context,
+  );
+
+  @override
+  num get avgRating {
+    _$avgRatingAtom.reportRead();
+    return super.avgRating;
+  }
+
+  @override
+  set avgRating(num value) {
+    _$avgRatingAtom.reportWrite(value, super.avgRating, () {
+      super.avgRating = value;
+    });
+  }
+
+  late final _$isBiddingEnabledAtom = Atom(
+    name: '_AppStore.isBiddingEnabled',
+    context: context,
+  );
 
   @override
   String get isBiddingEnabled {
@@ -519,7 +702,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$lightThemeAtom = Atom(name: '_AppStore.lightTheme', context: context);
+  late final _$lightThemeAtom = Atom(
+    name: '_AppStore.lightTheme',
+    context: context,
+  );
 
   @override
   ThemeData get lightTheme {
@@ -534,7 +720,10 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$darkThemeAtom = Atom(name: '_AppStore.darkTheme', context: context);
+  late final _$darkThemeAtom = Atom(
+    name: '_AppStore.darkTheme',
+    context: context,
+  );
 
   @override
   ThemeData get darkTheme {
@@ -549,193 +738,354 @@ mixin _$AppStore on _AppStore, Store {
     });
   }
 
-  late final _$setLoadingAsyncAction = AsyncAction('_AppStore.setLoading', context: context);
+  late final _$setLoadingAsyncAction = AsyncAction(
+    '_AppStore.setLoading',
+    context: context,
+  );
 
   @override
   Future<void> setLoading(bool val) {
     return _$setLoadingAsyncAction.run(() => super.setLoading(val));
   }
 
-  late final _$setIsBiddingStatusAsyncAction = AsyncAction('_AppStore.setIsBiddingStatus', context: context);
+  late final _$setIsBiddingStatusAsyncAction = AsyncAction(
+    '_AppStore.setIsBiddingStatus',
+    context: context,
+  );
 
   @override
   Future<void> setIsBiddingStatus(String val) {
-    return _$setIsBiddingStatusAsyncAction.run(() => super.setIsBiddingStatus(val));
+    return _$setIsBiddingStatusAsyncAction.run(
+      () => super.setIsBiddingStatus(val),
+    );
   }
 
-  late final _$setLoginAsyncAction = AsyncAction('_AppStore.setLogin', context: context);
+  late final _$setLoginAsyncAction = AsyncAction(
+    '_AppStore.setLogin',
+    context: context,
+  );
 
   @override
   Future<void> setLogin(bool val, {bool isInitializing = false}) {
-    return _$setLoginAsyncAction.run(() => super.setLogin(val, isInitializing: isInitializing));
+    return _$setLoginAsyncAction.run(
+      () => super.setLogin(val, isInitializing: isInitializing),
+    );
   }
 
-  late final _$setUserEmailAsyncAction = AsyncAction('_AppStore.setUserEmail', context: context);
+  late final _$setUserEmailAsyncAction = AsyncAction(
+    '_AppStore.setUserEmail',
+    context: context,
+  );
 
   @override
   Future<void> setUserEmail(String val, {bool isInitialization = false}) {
-    return _$setUserEmailAsyncAction.run(() => super.setUserEmail(val, isInitialization: isInitialization));
+    return _$setUserEmailAsyncAction.run(
+      () => super.setUserEmail(val, isInitialization: isInitialization),
+    );
   }
 
-  late final _$setUIdAsyncAction = AsyncAction('_AppStore.setUId', context: context);
+  late final _$setUIdAsyncAction = AsyncAction(
+    '_AppStore.setUId',
+    context: context,
+  );
 
   @override
   Future<void> setUId(String val, {bool isInitializing = false}) {
-    return _$setUIdAsyncAction.run(() => super.setUId(val, isInitializing: isInitializing));
+    return _$setUIdAsyncAction.run(
+      () => super.setUId(val, isInitializing: isInitializing),
+    );
   }
 
-  late final _$setAllUnreadCountAsyncAction = AsyncAction('_AppStore.setAllUnreadCount', context: context);
+  late final _$setAllUnreadCountAsyncAction = AsyncAction(
+    '_AppStore.setAllUnreadCount',
+    context: context,
+  );
 
   @override
   Future<void> setAllUnreadCount(int val) {
-    return _$setAllUnreadCountAsyncAction.run(() => super.setAllUnreadCount(val));
+    return _$setAllUnreadCountAsyncAction.run(
+      () => super.setAllUnreadCount(val),
+    );
   }
 
-  late final _$setOtpVerifyOnPickupDeliveryAsyncAction = AsyncAction('_AppStore.setOtpVerifyOnPickupDelivery', context: context);
+  late final _$setOtpVerifyOnPickupDeliveryAsyncAction = AsyncAction(
+    '_AppStore.setOtpVerifyOnPickupDelivery',
+    context: context,
+  );
 
   @override
   Future<void> setOtpVerifyOnPickupDelivery(bool val) {
-    return _$setOtpVerifyOnPickupDeliveryAsyncAction.run(() => super.setOtpVerifyOnPickupDelivery(val));
+    return _$setOtpVerifyOnPickupDeliveryAsyncAction.run(
+      () => super.setOtpVerifyOnPickupDelivery(val),
+    );
   }
 
-  late final _$setCurrencyCodeAsyncAction = AsyncAction('_AppStore.setCurrencyCode', context: context);
+  late final _$setCurrencyCodeAsyncAction = AsyncAction(
+    '_AppStore.setCurrencyCode',
+    context: context,
+  );
 
   @override
   Future<void> setCurrencyCode(String val) {
     return _$setCurrencyCodeAsyncAction.run(() => super.setCurrencyCode(val));
   }
 
-  late final _$setCurrencySymbolAsyncAction = AsyncAction('_AppStore.setCurrencySymbol', context: context);
+  late final _$setCurrencySymbolAsyncAction = AsyncAction(
+    '_AppStore.setCurrencySymbol',
+    context: context,
+  );
 
   @override
   Future<void> setCurrencySymbol(String val) {
-    return _$setCurrencySymbolAsyncAction.run(() => super.setCurrencySymbol(val));
+    return _$setCurrencySymbolAsyncAction.run(
+      () => super.setCurrencySymbol(val),
+    );
   }
 
-  late final _$setCurrencyPositionAsyncAction = AsyncAction('_AppStore.setCurrencyPosition', context: context);
+  late final _$setCurrencyPositionAsyncAction = AsyncAction(
+    '_AppStore.setCurrencyPosition',
+    context: context,
+  );
 
   @override
   Future<void> setCurrencyPosition(String val) {
-    return _$setCurrencyPositionAsyncAction.run(() => super.setCurrencyPosition(val));
+    return _$setCurrencyPositionAsyncAction.run(
+      () => super.setCurrencyPosition(val),
+    );
   }
 
-  late final _$setLanguageAsyncAction = AsyncAction('_AppStore.setLanguage', context: context);
+  late final _$setLanguageAsyncAction = AsyncAction(
+    '_AppStore.setLanguage',
+    context: context,
+  );
 
   @override
   Future<void> setLanguage(String aCode, {BuildContext? context}) {
-    return _$setLanguageAsyncAction.run(() => super.setLanguage(aCode, context: context));
+    return _$setLanguageAsyncAction.run(
+      () => super.setLanguage(aCode, context: context),
+    );
   }
 
-  late final _$setDarkModeAsyncAction = AsyncAction('_AppStore.setDarkMode', context: context);
+  late final _$setDarkModeAsyncAction = AsyncAction(
+    '_AppStore.setDarkMode',
+    context: context,
+  );
 
   @override
   Future<void> setDarkMode(bool aIsDarkMode) {
     return _$setDarkModeAsyncAction.run(() => super.setDarkMode(aIsDarkMode));
   }
 
-  late final _$setFilteringAsyncAction = AsyncAction('_AppStore.setFiltering', context: context);
+  late final _$setFilteringAsyncAction = AsyncAction(
+    '_AppStore.setFiltering',
+    context: context,
+  );
 
   @override
   Future<void> setFiltering(bool val) {
     return _$setFilteringAsyncAction.run(() => super.setFiltering(val));
   }
 
-  late final _$setUserProfileAsyncAction = AsyncAction('_AppStore.setUserProfile', context: context);
+  late final _$setPlanTypeAsyncAction = AsyncAction(
+    '_AppStore.setPlanType',
+    context: context,
+  );
+
+  @override
+  Future<void> setPlanType(String? val, {bool isInitializing = false}) {
+    return _$setPlanTypeAsyncAction.run(
+      () => super.setPlanType(val, isInitializing: isInitializing),
+    );
+  }
+
+  late final _$setFuelBalanceAsyncAction = AsyncAction(
+    '_AppStore.setFuelBalance',
+    context: context,
+  );
+
+  @override
+  Future<void> setFuelBalance(double? val, {bool isInitializing = false}) {
+    return _$setFuelBalanceAsyncAction.run(
+      () => super.setFuelBalance(val, isInitializing: isInitializing),
+    );
+  }
+
+  late final _$setUserProfileAsyncAction = AsyncAction(
+    '_AppStore.setUserProfile',
+    context: context,
+  );
 
   @override
   Future<void> setUserProfile(String val, {bool isInitializing = false}) {
-    return _$setUserProfileAsyncAction.run(() => super.setUserProfile(val, isInitializing: isInitializing));
+    return _$setUserProfileAsyncAction.run(
+      () => super.setUserProfile(val, isInitializing: isInitializing),
+    );
   }
 
-  late final _$setCopyRightAsyncAction = AsyncAction('_AppStore.setCopyRight', context: context);
+  late final _$setCopyRightAsyncAction = AsyncAction(
+    '_AppStore.setCopyRight',
+    context: context,
+  );
 
   @override
   Future<void> setCopyRight(String val) {
     return _$setCopyRightAsyncAction.run(() => super.setCopyRight(val));
   }
 
-  late final _$setSiteEmailAsyncAction = AsyncAction('_AppStore.setSiteEmail', context: context);
+  late final _$setSiteEmailAsyncAction = AsyncAction(
+    '_AppStore.setSiteEmail',
+    context: context,
+  );
 
   @override
   Future<void> setSiteEmail(String val) {
     return _$setSiteEmailAsyncAction.run(() => super.setSiteEmail(val));
   }
 
-  late final _$setIsAllowDeliveryManAsyncAction = AsyncAction('_AppStore.setIsAllowDeliveryMan', context: context);
+  late final _$setIsAllowDeliveryManAsyncAction = AsyncAction(
+    '_AppStore.setIsAllowDeliveryMan',
+    context: context,
+  );
 
   @override
   Future<void> setIsAllowDeliveryMan(bool val) {
-    return _$setIsAllowDeliveryManAsyncAction.run(() => super.setIsAllowDeliveryMan(val));
+    return _$setIsAllowDeliveryManAsyncAction.run(
+      () => super.setIsAllowDeliveryMan(val),
+    );
   }
 
-  late final _$setReferralCodeAsyncAction = AsyncAction('_AppStore.setReferralCode', context: context);
+  late final _$setReferralCodeAsyncAction = AsyncAction(
+    '_AppStore.setReferralCode',
+    context: context,
+  );
 
   @override
   Future<void> setReferralCode(String val) {
     return _$setReferralCodeAsyncAction.run(() => super.setReferralCode(val));
   }
 
-  late final _$setMaxAmountPerMonthAsyncAction = AsyncAction('_AppStore.setMaxAmountPerMonth', context: context);
+  late final _$setMaxAmountPerMonthAsyncAction = AsyncAction(
+    '_AppStore.setMaxAmountPerMonth',
+    context: context,
+  );
 
   @override
   Future<void> setMaxAmountPerMonth(String val) {
-    return _$setMaxAmountPerMonthAsyncAction.run(() => super.setMaxAmountPerMonth(val));
+    return _$setMaxAmountPerMonthAsyncAction.run(
+      () => super.setMaxAmountPerMonth(val),
+    );
   }
 
-  late final _$setThemeColorAsyncAction = AsyncAction('_AppStore.setThemeColor', context: context);
+  late final _$setThemeColorAsyncAction = AsyncAction(
+    '_AppStore.setThemeColor',
+    context: context,
+  );
 
   @override
   Future<void> setThemeColor(String val) {
     return _$setThemeColorAsyncAction.run(() => super.setThemeColor(val));
   }
 
-  late final _$setInsurancePercentageAsyncAction = AsyncAction('_AppStore.setInsurancePercentage', context: context);
+  late final _$setInsurancePercentageAsyncAction = AsyncAction(
+    '_AppStore.setInsurancePercentage',
+    context: context,
+  );
 
   @override
   Future<void> setInsurancePercentage(String val) {
-    return _$setInsurancePercentageAsyncAction.run(() => super.setInsurancePercentage(val));
+    return _$setInsurancePercentageAsyncAction.run(
+      () => super.setInsurancePercentage(val),
+    );
   }
 
-  late final _$setIsInsuranceAllowedAsyncAction = AsyncAction('_AppStore.setIsInsuranceAllowed', context: context);
+  late final _$setIsInsuranceAllowedAsyncAction = AsyncAction(
+    '_AppStore.setIsInsuranceAllowed',
+    context: context,
+  );
 
   @override
   Future<void> setIsInsuranceAllowed(String val) {
-    return _$setIsInsuranceAllowedAsyncAction.run(() => super.setIsInsuranceAllowed(val));
+    return _$setIsInsuranceAllowedAsyncAction.run(
+      () => super.setIsInsuranceAllowed(val),
+    );
   }
 
-  late final _$setInsuranceDescriptionAsyncAction = AsyncAction('_AppStore.setInsuranceDescription', context: context);
+  late final _$setInsuranceDescriptionAsyncAction = AsyncAction(
+    '_AppStore.setInsuranceDescription',
+    context: context,
+  );
 
   @override
   Future<void> setInsuranceDescription(String val) {
-    return _$setInsuranceDescriptionAsyncAction.run(() => super.setInsuranceDescription(val));
+    return _$setInsuranceDescriptionAsyncAction.run(
+      () => super.setInsuranceDescription(val),
+    );
   }
 
-  late final _$setClaimDurationAsyncAction = AsyncAction('_AppStore.setClaimDuration', context: context);
+  late final _$setClaimDurationAsyncAction = AsyncAction(
+    '_AppStore.setClaimDuration',
+    context: context,
+  );
 
   @override
   Future<void> setClaimDuration(String val) {
     return _$setClaimDurationAsyncAction.run(() => super.setClaimDuration(val));
   }
 
-  late final _$setCrispChatWebsiteIdAsyncAction = AsyncAction('_AppStore.setCrispChatWebsiteId', context: context);
+  late final _$setCrispChatWebsiteIdAsyncAction = AsyncAction(
+    '_AppStore.setCrispChatWebsiteId',
+    context: context,
+  );
 
   @override
   Future<void> setCrispChatWebsiteId(String val) {
-    return _$setCrispChatWebsiteIdAsyncAction.run(() => super.setCrispChatWebsiteId(val));
+    return _$setCrispChatWebsiteIdAsyncAction.run(
+      () => super.setCrispChatWebsiteId(val),
+    );
   }
 
-  late final _$setIsCrispChatEnabledAsyncAction = AsyncAction('_AppStore.setIsCrispChatEnabled', context: context);
+  late final _$setIsCrispChatEnabledAsyncAction = AsyncAction(
+    '_AppStore.setIsCrispChatEnabled',
+    context: context,
+  );
 
   @override
   Future<void> setIsCrispChatEnabled(bool val) {
-    return _$setIsCrispChatEnabledAsyncAction.run(() => super.setIsCrispChatEnabled(val));
+    return _$setIsCrispChatEnabledAsyncAction.run(
+      () => super.setIsCrispChatEnabled(val),
+    );
   }
 
-  late final _$_AppStoreActionController = ActionController(name: '_AppStore', context: context);
+  late final _$setIsSmsOrderAsyncAction = AsyncAction(
+    '_AppStore.setIsSmsOrder',
+    context: context,
+  );
+
+  @override
+  Future<void> setIsSmsOrder(int val) {
+    return _$setIsSmsOrderAsyncAction.run(() => super.setIsSmsOrder(val));
+  }
+
+  late final _$setAvrgRatingAsyncAction = AsyncAction(
+    '_AppStore.setAvrgRating',
+    context: context,
+  );
+
+  @override
+  Future<void> setAvrgRating(num val) {
+    return _$setAvrgRatingAsyncAction.run(() => super.setAvrgRating(val));
+  }
+
+  late final _$_AppStoreActionController = ActionController(
+    name: '_AppStore',
+    context: context,
+  );
 
   @override
   void setInvoiceCompanyName(String val) {
-    final _$actionInfo = _$_AppStoreActionController.startAction(name: '_AppStore.setInvoiceCompanyName');
+    final _$actionInfo = _$_AppStoreActionController.startAction(
+      name: '_AppStore.setInvoiceCompanyName',
+    );
     try {
       return super.setInvoiceCompanyName(val);
     } finally {
@@ -745,7 +1095,9 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   void setInvoiceCompanyLogo(String val) {
-    final _$actionInfo = _$_AppStoreActionController.startAction(name: '_AppStore.setInvoiceCompanyLogo');
+    final _$actionInfo = _$_AppStoreActionController.startAction(
+      name: '_AppStore.setInvoiceCompanyLogo',
+    );
     try {
       return super.setInvoiceCompanyLogo(val);
     } finally {
@@ -755,7 +1107,9 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   void setInvoiceContactNumber(String val) {
-    final _$actionInfo = _$_AppStoreActionController.startAction(name: '_AppStore.setInvoiceContactNumber');
+    final _$actionInfo = _$_AppStoreActionController.startAction(
+      name: '_AppStore.setInvoiceContactNumber',
+    );
     try {
       return super.setInvoiceContactNumber(val);
     } finally {
@@ -765,7 +1119,9 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   void setCompanyAddress(String val) {
-    final _$actionInfo = _$_AppStoreActionController.startAction(name: '_AppStore.setCompanyAddress');
+    final _$actionInfo = _$_AppStoreActionController.startAction(
+      name: '_AppStore.setCompanyAddress',
+    );
     try {
       return super.setCompanyAddress(val);
     } finally {
@@ -775,7 +1131,9 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   void setDistanceUnit(String val) {
-    final _$actionInfo = _$_AppStoreActionController.startAction(name: '_AppStore.setDistanceUnit');
+    final _$actionInfo = _$_AppStoreActionController.startAction(
+      name: '_AppStore.setDistanceUnit',
+    );
     try {
       return super.setDistanceUnit(val);
     } finally {
@@ -785,7 +1143,9 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   void setUserType(String val) {
-    final _$actionInfo = _$_AppStoreActionController.startAction(name: '_AppStore.setUserType');
+    final _$actionInfo = _$_AppStoreActionController.startAction(
+      name: '_AppStore.setUserType',
+    );
     try {
       return super.setUserType(val);
     } finally {
@@ -795,7 +1155,9 @@ mixin _$AppStore on _AppStore, Store {
 
   @override
   void updateTheme(Color newColor) {
-    final _$actionInfo = _$_AppStoreActionController.startAction(name: '_AppStore.updateTheme');
+    final _$actionInfo = _$_AppStoreActionController.startAction(
+      name: '_AppStore.updateTheme',
+    );
     try {
       return super.updateTheme(newColor);
     } finally {
@@ -813,6 +1175,8 @@ allUnreadCount: ${allUnreadCount},
 selectedLanguage: ${selectedLanguage},
 isDarkMode: ${isDarkMode},
 isFiltering: ${isFiltering},
+planType: ${planType},
+fuelBalance: ${fuelBalance},
 uid: ${uid},
 isOtpVerifyOnPickupDelivery: ${isOtpVerifyOnPickupDelivery},
 currencyCode: ${currencyCode},
@@ -839,6 +1203,8 @@ insuranceDescription: ${insuranceDescription},
 claimDuration: ${claimDuration},
 crispChatWebsiteId: ${crispChatWebsiteId},
 isCrispChatEnabled: ${isCrispChatEnabled},
+isSmsOrder: ${isSmsOrder},
+avgRating: ${avgRating},
 isBiddingEnabled: ${isBiddingEnabled},
 lightTheme: ${lightTheme},
 darkTheme: ${darkTheme}

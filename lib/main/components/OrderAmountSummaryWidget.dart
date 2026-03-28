@@ -13,6 +13,7 @@ import '../../main/utils/Common.dart';
 import '../../main.dart';
 import '../utils/Constants.dart';
 import '../utils/dynamic_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderAmountDataWidget extends StatefulWidget {
   static String tag = '/OrderSummeryWidget';
@@ -35,6 +36,7 @@ class OrderAmountDataWidget extends StatefulWidget {
   double? perKmCityDataCharge;
   final CouponModel? coupon;
   final bool isAppliedCoupon;
+  final String? selectedServiceId;
 
   OrderAmountDataWidget({
     required this.fixedAmount,
@@ -52,6 +54,7 @@ class OrderAmountDataWidget extends StatefulWidget {
     required this.perKmCityDataCharge,
     required this.coupon,
     required this.isAppliedCoupon,
+    this.selectedServiceId,
   });
 
   @override
@@ -114,6 +117,26 @@ class OrderAmountDataWidgetState extends State<OrderAmountDataWidget> {
 
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: _serviceStream,
+      builder: (context, snapshot) {
+        double serviceRate = 0.0;
+        if (snapshot.hasData && snapshot.data != null && snapshot.data!.exists) {
+          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          serviceRate = (data['rate'] ?? 0.0).toDouble();
+        }
+
+        // Apply membership logic
+        if (appStore.planType == 'Annual' || appStore.planType == 'Founders') {
+          serviceRate = (serviceRate - 0.10).clamp(0.0, double.infinity);
+        } else if (appStore.planType == 'PlatinumSpa') {
+          serviceRate = serviceRate * 0.50;
+        }
+
+        if (appStore.planType == 'Founders' && (appStore.fuelBalance ?? 0) > 0) {
+           serviceRate = 0.00;
+        }
+
     return Container(
       width: context.width(),
       padding: .all(16),
@@ -125,6 +148,14 @@ class OrderAmountDataWidgetState extends State<OrderAmountDataWidget> {
       child: Column(
         crossAxisAlignment: .start,
         children: [
+          if (serviceRate > 0 || (appStore.planType == 'Founders' && (appStore.fuelBalance ?? 0) > 0))
+             Row(
+              mainAxisAlignment: .spaceBetween,
+              children: [
+                Text(language.pricePerGallon, style: secondaryTextStyle()),
+                Text('\$${serviceRate.toStringAsFixed(2)}', style: boldTextStyle(size: 14)),
+              ],
+            ).paddingBottom(8),
           if (appStore.isVehicleOrder == 1)
             Row(
               children: [
@@ -248,5 +279,6 @@ class OrderAmountDataWidgetState extends State<OrderAmountDataWidget> {
         ],
       ),
     );
+      });
   }
 }

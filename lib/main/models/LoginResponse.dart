@@ -141,6 +141,8 @@ class UserData {
     app_source = json['app_source'];
     referralCode = json['referral_code'];
     partnerReferralCode = json['partner_referral_code'];
+    planType = json['plan_type'];
+    fuelBalance = json['fuel_balance'] != null ? double.tryParse(json['fuel_balance'].toString()) : null;
     averageRating = json['average_rating'];
     deliverymanVehicleHistory = json["DeliverymanVehicleHistory"] != null ? List<DeliverymanVehicle>.from(json["DeliverymanVehicleHistory"].map((x) => DeliverymanVehicle.fromJson(x))) : null;
   }
@@ -182,6 +184,8 @@ class UserData {
     data['document_verified_at'] = this.documentVerifiedAt;
     data['referral_code'] = this.referralCode;
     data['partner_referral_code'] = this.partnerReferralCode;
+    data['plan_type'] = this.planType;
+    data['fuel_balance'] = this.fuelBalance;
     data['average_rating'] = this.averageRating;
     data['DeliverymanVehicleHistory'] = this.deliverymanVehicleHistory != null ? List<DeliverymanVehicle>.from(this.deliverymanVehicleHistory!.map((x) => x.toJson())) : null;
 
