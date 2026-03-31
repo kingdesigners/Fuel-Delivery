@@ -5,6 +5,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'MyAddressListScreen.dart';
 import '../../main/models/AddressListModel.dart';
 import 'ServiceIconHelper.dart';
@@ -519,7 +520,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       },
       "packaging_symbols": packaging_symbols,
       "extra_charges": extraChargeList,
-      "service_type": serviceTypeCont.text,
+      "parcel_type": serviceTypeCont.text,
       "total_weight": weightController.text.toDouble(),
       "total_distance":
           totalDistance.toStringAsFixed(digitAfterDecimal).validate(),
@@ -535,7 +536,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
       "total_amount": calculateTotalAmount(),
       "weight_charge": totalAmountResponse!.weightAmount!.toDouble(),
       "distance_charge": totalAmountResponse!.distanceAmount!.toDouble(),
-      "total_service_requests": totalServiceController.text.toInt(),
+      "total_parcel": totalServiceController.text.toInt(),
       "insurance_charge": insuranceAmount,
       if (selectedCoupon?.couponCode != null && isAppliedCoupon == true)
         "discount_amount":
@@ -1200,11 +1201,15 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        ServiceIconHelper.getIconPath(item.label ?? ''),
-                        height: 40,
-                        width: 40,
-                      ),
+                      item.image != null && item.image!.isNotEmpty
+                          ? CachedNetworkImage(
+                              imageUrl: item.image!,
+                              height: 40,
+                              width: 40,
+                              placeholder: (context, url) => Image.asset(ServiceIconHelper.getIconPath(item.label ?? '')),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            )
+                          : Image.asset(ServiceIconHelper.getIconPath(item.label ?? ''), height: 40, width: 40),
                       const SizedBox(height: 8),
                       Text(
                         item.label!,

@@ -304,6 +304,7 @@ class DashboardScreenState extends State<DashboardScreen> with WidgetsBindingObs
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: null,
         shape: RoundedRectangleBorder(borderRadius: radius(40)),
         backgroundColor: appStore.availableBal >= 0 ? ColorUtils.colorPrimary : textSecondaryColorGlobal,
         child: Icon(AntDesign.plus, color: Colors.white),
