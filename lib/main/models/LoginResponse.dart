@@ -67,6 +67,8 @@ class UserData {
   String? app_source;
   String? referralCode;
   String? partnerReferralCode;
+  String? planType;
+  double? fuelBalance;
   List<DeliverymanVehicle>? deliverymanVehicleHistory;
 
   UserData(
@@ -103,6 +105,8 @@ class UserData {
       this.app_source,
       this.partnerReferralCode,
       this.referralCode,
+      this.planType,
+      this.fuelBalance,
       this.deliverymanVehicleHistory,
       this.averageRating});
 
