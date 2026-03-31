@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mighty_delivery/main/models/ServiceModel.dart';
 import 'MyAddressListScreen.dart';
 import '../../main/models/AddressListModel.dart';
 import 'ServiceIconHelper.dart';
@@ -1186,7 +1187,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
               bool isSelected = serviceTypeCont.text == item.label;
               return GestureDetector(
                 onTap: () {
-                  serviceTypeCont.text = item.label!;
+                  serviceTypeCont.text = item.label ?? '';
                   setState(() {});
                 },
                 child: Container(
@@ -1212,7 +1213,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
                           : Image.asset(ServiceIconHelper.getIconPath(item.label ?? ''), height: 40, width: 40),
                       const SizedBox(height: 8),
                       Text(
-                        item.label!,
+                        item.label ?? '',
                         style: primaryTextStyle(
                           size: 14,
                           color: isSelected ? ColorUtils.colorPrimary : textPrimaryColorGlobal,
