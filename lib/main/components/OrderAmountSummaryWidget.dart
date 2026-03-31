@@ -64,13 +64,29 @@ class OrderAmountDataWidget extends StatefulWidget {
 class OrderAmountDataWidgetState extends State<OrderAmountDataWidget> {
   double baseTotal = 0;
   double? extraChargesTotal = 0;
+  Stream<DocumentSnapshot>? _serviceStream;
 
   @override
   void initState() {
     super.initState();
     baseTotal = widget.baseTotal!.toDouble();
+    if (widget.selectedServiceId != null) {
+      _serviceStream = FirebaseFirestore.instance.collection('services').doc(widget.selectedServiceId).snapshots();
+    }
     cal();
     setState(() {});
+  }
+
+  @override
+  void didUpdateWidget(OrderAmountDataWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedServiceId != widget.selectedServiceId) {
+      if (widget.selectedServiceId != null) {
+        _serviceStream = FirebaseFirestore.instance.collection('services').doc(widget.selectedServiceId).snapshots();
+      } else {
+        _serviceStream = null;
+      }
+    }
   }
 
   cal() async {

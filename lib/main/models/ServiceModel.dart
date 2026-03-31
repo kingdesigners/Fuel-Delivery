@@ -26,14 +26,20 @@ class ServiceData {
   String? title;
   String? label;
   String? value;
+  String? image;
+  String? description;
+  int? status;
 
-  ServiceData({this.id, this.title, this.label, this.value});
+  ServiceData({this.id, this.title, this.label, this.value, this.image, this.description, this.status});
 
   ServiceData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
-    label = json['label'];
+    label = json['label'] ?? json['title']; // Safety fallback
     value = json['value'];
+    image = json['image'];
+    description = json['description'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +48,9 @@ class ServiceData {
     data['title'] = this.title;
     data['label'] = this.label;
     data['value'] = this.value;
+    data['image'] = this.image;
+    data['description'] = this.description;
+    data['status'] = this.status;
     return data;
   }
 }
