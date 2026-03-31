@@ -71,7 +71,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   CityDetail? cityData;
-  List<ServiceData> serviceList = [];
+  List<ServiceData> serviceList = <ServiceData>[];
 
   TextEditingController serviceTypeCont = TextEditingController();
   TextEditingController weightController = TextEditingController(text: '1');
@@ -2131,7 +2131,7 @@ class CreateOrderScreenState extends State<CreateOrderScreen> {
           16.height,
           if (totalAmountResponse != null)
             OrderAmountDataWidget(
-                selectedServiceId: serviceList.firstWhere((e) => e.label == serviceTypeCont.text, orElse: () => ServiceData()).id?.toString(),
+                selectedServiceId: serviceList.isNotEmpty ? serviceList.firstWhere((e) => (e.label ?? '') == serviceTypeCont.text, orElse: () => serviceList.first).id?.toString() : null,
                 fixedAmount: totalAmountResponse!.fixedAmount!.toDouble(),
                 distanceAmount: totalAmountResponse!.distanceAmount!.toDouble(),
                 extraCharges: totalAmountResponse!.extraCharges!,
